@@ -36,10 +36,6 @@ const getAll = async () =>
    ]
 ;
 
-const create = async ({ name, login, password }) => new User({ name, login, password });
-
-const update = async ({ id, name, login, password }) => new User({ id, name, login, password });
-
 const getUser = async userId => {
   const users = await getAll();
   const user = users.find(({ id }) => id === userId);
@@ -49,6 +45,16 @@ const getUser = async userId => {
 
   return user;
 };
+
+const create = async ({ name, login, password }) => new User({ name, login, password });
+
+const update = async ({ id, name, login, password }) => {
+  await getUser(id);
+
+  return new User({ id, name, login, password });
+}
+
+
 
 const deleteUser = async userId => {
   await getUser(userId);
