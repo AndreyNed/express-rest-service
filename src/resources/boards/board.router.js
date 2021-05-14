@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const boardService = require('./board.service');
+const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
 
 router.route('/').get(async (req, res) => {
   const boards = await boardService.getAll();
@@ -22,8 +23,7 @@ router.route('/:boardId').put(async (req, res) => {
     const board = await boardService.update({ id: boardId, title, columns });
     res.status(200).json(board);
   } catch (e) {
-    const { status = 500, message = 'Server error' } = e || {};
-    res.status(status).send(message);
+    defaultHttpErrorHandler(e, res);
   }
 });
 
@@ -34,8 +34,7 @@ router.route('/:boardId').get(async (req, res) => {
     const board = await boardService.getBoard(boardId);
     res.status(200).json(board);
   } catch(e) {
-    const { status = 500, message = 'Server error' } = e || {};
-    res.status(status).send(message);
+    defaultHttpErrorHandler(e, res);
   }
 });
 
@@ -45,8 +44,7 @@ router.route('/:boardId').delete(async (req, res) => {
     await boardService.deleteBoard(boardId);
     res.sendStatus(204);
   } catch (e) {
-    const { status = 500, message = 'Server error' } = e || {};
-    res.status(status).send(message);
+    defaultHttpErrorHandler(e, res);
   }
 });
 

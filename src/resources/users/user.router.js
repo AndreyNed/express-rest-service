@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const User = require('./user.model');
 const usersService = require('./user.service');
+const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
@@ -25,19 +26,21 @@ router.route('/:userId').get(async (req, res) => {
 
     res.status(200).json(User.toResponse(user));
   } catch(e) {
-    const { status = 500, message = 'Server error' } = e || {};
-
-    res.status(status).send(message);
+    defaultHttpErrorHandler(e, res);
   }
 });
 
 router.route('/:userId').put(async (req, res) => {
   const { userId: id } = req.params;
   const { name, login, password } = req.body;
-  // Updates a user by ID
-  const user = await usersService.update({ id, name, login, password });
+  try {
+    // Updates a user by ID
+    const user = await usersService.update({ id, name, login, password });
 
-  res.status(200).json(User.toResponse(user));
+    res.status(200).json(User.toResponse(user));
+  } catch (e) {
+    defaultHttpErrorHandler(e, res);
+  }
 });
 
 router.route('/:userId').delete(async (req, res) => {
@@ -48,9 +51,7 @@ router.route('/:userId').delete(async (req, res) => {
 
     res.sendStatus(204);
   } catch (e) {
-    const { status = 500, message = 'Server error' } = e || {};
-
-    res.status(status).send(message);
+    defaultHttpErrorHandler(e, res);
   }
 });
 
