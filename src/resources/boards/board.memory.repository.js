@@ -1,3 +1,5 @@
+const Board = require('./board.model');
+
 const getAll = async () =>
   // TODO: mock implementation. should be replaced during task development
   [
@@ -20,4 +22,26 @@ const getAll = async () =>
   ]
 ;
 
-module.exports = { getAll };
+const getBoard = async boardId => {
+  const board = (await getAll()).find(({ id }) => id === boardId);
+
+  if (!board) throw Object.create({ status: 404, message: 'Board not found' });
+
+  return board;
+};
+
+const create = async ({ title, columns }) => new Board({ title, columns });
+
+const update = async ({ id, title, columns }) => {
+  await getBoard(id);
+
+  return new Board({ id, title, columns })
+};
+
+const deleteBoard = async boardId => {
+  await getBoard(boardId);
+
+  return true;
+};
+
+module.exports = { getAll, getBoard, create, update, deleteBoard };
