@@ -48,16 +48,20 @@ const getUser = async userId => {
 
 const create = async ({ name, login, password }) => new User({ name, login, password });
 
-const update = async ({ id, name, login, password }) => {
-  await getUser(id);
-
-  return new User({ id, name, login, password });
-}
+const update = async (user, { name, login, password }) => (
+  new User({
+    ...user,
+    ...(name && { name }),
+    ...(login && { login }),
+    ...(password && { password }),
+  })
+);
 
 
 
 const deleteUser = async userId => {
-  await getUser(userId);
+  // eslint-disable-next-line no-console
+  console.log('*** User is deleted', userId);
 
   return true;
 };

@@ -2,57 +2,41 @@ const router = require('express').Router();
 
 const User = require('./user.model');
 const usersService = require('./user.service');
-const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
+const getUser = require('../../utils/get.user');
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
-  // map user fields to exclude secret fields like "password"
+
   res.status(200).json(users.map(User.toResponse));
 });
 
 router.route('/').post(async (req, res) => {
   const { name, login, password } = req.body;
-  // Create a new user (remove password from response)
   const user = await usersService.create({ name, login, password });
 
   res.status(201).json(User.toResponse(user));
 });
 
-router.route('/:userId').get(async (req, res) => {
-  const { userId } = req.params;
-  // Gets a user by ID e.g. “/users/123” (remove password from response)
-  try {
-    const user = await usersService.getUser(userId);
+router.use('/:userId', getUser);
 
-    res.status(200).json(User.toResponse(user));
-  } catch(e) {
-    defaultHttpErrorHandler(e, res);
-  }
+router.route('/:userId').get(async (req, res) => {
+  res.status(200).json(User.toResponse(res.locals.user));
 });
 
 router.route('/:userId').put(async (req, res) => {
-  const { userId: id } = req.params;
   const { name, login, password } = req.body;
-  try {
-    // Updates a user by ID
-    const user = await usersService.update({ id, name, login, password });
+  const user = await usersService.update(
+    res.locals.user,
+    { name, login, password },
+  );
 
-    res.status(200).json(User.toResponse(user));
-  } catch (e) {
-    defaultHttpErrorHandler(e, res);
-  }
+  res.status(200).json(User.toResponse(user));
 });
 
 router.route('/:userId').delete(async (req, res) => {
-  const { userId } = req.params;
-  // Delete a user by ID
-  try {
-    await usersService.deleteUser(userId);
+  await usersService.deleteUser(res.locals.user.id);
 
-    res.sendStatus(204);
-  } catch (e) {
-    defaultHttpErrorHandler(e, res);
-  }
+  res.sendStatus(204);
 });
 
 module.exports = router;
