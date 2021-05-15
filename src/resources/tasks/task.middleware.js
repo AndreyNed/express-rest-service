@@ -1,11 +1,15 @@
-const getTaskId = (req, res, next) => {
+const taskService = require('./task.service');
+const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
+
+const getTask = async (req, res, next) => {
   const { taskId } = req.params;
-  if (!taskId) {
-    res.status(400).send('Parameter `taskId` wrong or missed');
-  } else {
-    res.locals.taskId = taskId;
+  try {
+    res.locals.task = await taskService.getTask(taskId);
+
     next();
+  } catch (e) {
+    defaultHttpErrorHandler(e, res);
   }
 };
 
-module.exports = { getTaskId };
+module.exports = { getTask };

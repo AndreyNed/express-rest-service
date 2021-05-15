@@ -7,16 +7,16 @@ const getAll = async () =>
       id: 'board1',
       title: 'Board One',
       columns: [
-        { id: 'Board1Column1', title: 'Column One', order: 0 },
-        { id: 'Board1Column2', title: 'Column Two', order: 1 },
+        { id: 'board1Column1', title: 'Column One', order: 0 },
+        { id: 'board1Column2', title: 'Column Two', order: 1 },
       ],
     },
     {
       id: 'board2',
       title: 'Board Two',
       columns: [
-        { id: 'Board2Column1', title: 'Column One', order: 0 },
-        { id: 'Board2Column2', title: 'Column Two', order: 1 },
+        { id: 'board2Column1', title: 'Column One', order: 0 },
+        { id: 'board2Column2', title: 'Column Two', order: 1 },
       ],
     },
   ]
