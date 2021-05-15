@@ -10,8 +10,7 @@ router.route('/').get(async (req, res) => {
 });
 
 router.route('/').post(async (req, res) => {
-  const { title, columns } = req.body;
-  const board = await boardService.create({ title, columns });
+  const board = await boardService.create(req.body);
 
   res.status(201).json(board);
 });
@@ -23,10 +22,9 @@ router.route('/:boardId').get(async (req, res) => {
 });
 
 router.route('/:boardId').put(async (req, res) => {
-  const { title, columns } = req.body;
   const board = await boardService.update(
     res.locals.board,
-    { title, columns }
+    req.body,
   );
 
   res.status(200).json(board);

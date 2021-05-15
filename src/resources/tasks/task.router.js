@@ -12,22 +12,7 @@ router.route('/').get(async (req, res) => {
 });
 
 router.route('/').post(async (req, res) => {
-  const {
-    title,
-    order,
-    description,
-    userId,
-    boardId,
-    columnId,
-  } = req.body;
-  const task = await taskService.create({
-    title,
-    order,
-    description,
-    userId,
-    boardId,
-    columnId,
-  });
+  const task = await taskService.create(req.body);
   res.status(201).json(task);
 });
 

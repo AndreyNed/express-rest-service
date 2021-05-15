@@ -4,9 +4,9 @@ const getAll = () => boardRepo.getAll();
 
 const getBoard = boardId => boardRepo.getBoard(boardId);
 
-const create = ({ title, columns }) => boardRepo.create({ title, columns });
+const create = payload => boardRepo.create(payload);
 
-const update = (board, { title, columns }) => boardRepo.update(board, { title, columns });
+const update = (board, payload) => boardRepo.update(board, payload);
 
 const deleteBoard = boardId => boardRepo.deleteBoard(boardId);
 
