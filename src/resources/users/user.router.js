@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const User = require('./user.model');
 const usersService = require('./user.service');
-const getUser = require('../../utils/get.user');
+const userMiddleware = require('./user.middleware');
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
@@ -17,7 +17,7 @@ router.route('/').post(async (req, res) => {
   res.status(201).json(User.toResponse(user));
 });
 
-router.use('/:userId', getUser);
+router.use('/:userId', userMiddleware.getUser);
 
 router.route('/:userId').get(async (req, res) => {
   res.status(200).json(User.toResponse(res.locals.user));

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const boardService = require('./board.service');
-const getBoard = require('../../utils/get.board');
+const boardMiddleware = require('./board.middleware');
 
 router.route('/').get(async (req, res) => {
   const boards = await boardService.getAll();
@@ -16,7 +16,7 @@ router.route('/').post(async (req, res) => {
   res.status(201).json(board);
 });
 
-router.use('/:boardId', getBoard);
+router.use('/:boardId', boardMiddleware.getBoard);
 
 router.route('/:boardId').get(async (req, res) => {
   res.status(200).json(res.locals.board);

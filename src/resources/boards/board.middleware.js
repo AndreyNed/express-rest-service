@@ -1,5 +1,5 @@
-const defaultHttpErrorHandler = require('./default.http.error.handler');
-const boardService = require('../resources/boards/board.service');
+const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
+const boardService = require('./board.service');
 
 const getBoard = async (req, res, next) => {
   const { boardId } = req.params;
@@ -11,4 +11,4 @@ const getBoard = async (req, res, next) => {
   }
 };
 
-module.exports = getBoard;
+module.exports = { getBoard };

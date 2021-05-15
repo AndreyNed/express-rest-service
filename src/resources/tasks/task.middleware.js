@@ -8,4 +8,4 @@ const getTaskId = (req, res, next) => {
   }
 };
 
-module.exports = getTaskId;
+module.exports = { getTaskId };

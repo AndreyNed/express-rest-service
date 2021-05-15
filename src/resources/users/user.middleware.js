@@ -1,5 +1,5 @@
-const userService = require('../resources/users/user.service');
-const defaultHttpErrorHandler = require('./default.http.error.handler');
+const userService = require('./user.service');
+const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
 
 const getUser = async (req, res, next) => {
   const { userId } = req.params;
@@ -12,4 +12,4 @@ const getUser = async (req, res, next) => {
   }
 };
 
-module.exports = getUser;
+module.exports = { getUser };
