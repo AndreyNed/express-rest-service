@@ -6,7 +6,7 @@ const getBoard = boardId => boardRepo.getBoard(boardId);
 
 const create = ({ title, columns }) => boardRepo.create({ title, columns });
 
-const update = ({ id, title, columns }) => boardRepo.update({ id, title, columns });
+const update = (board, { title, columns }) => boardRepo.update(board, { title, columns });
 
 const deleteBoard = boardId => boardRepo.deleteBoard(boardId);
 

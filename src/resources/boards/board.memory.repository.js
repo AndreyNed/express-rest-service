@@ -22,6 +22,8 @@ const getAll = async () =>
   ]
 ;
 
+const create = async ({ title, columns }) => new Board({ title, columns });
+
 const getBoard = async boardId => {
   const board = (await getAll()).find(({ id }) => id === boardId);
 
@@ -30,17 +32,17 @@ const getBoard = async boardId => {
   return board;
 };
 
-const create = async ({ title, columns }) => new Board({ title, columns });
-
-const update = async ({ id, title, columns }) => {
-  await getBoard(id);
-
-  return new Board({ id, title, columns })
-};
+const update = async (board, { title, columns }) => (
+  new Board({
+    ...board,
+    ...(title && { title }),
+    ...(columns && { columns }),
+  })
+);
 
 const deleteBoard = async boardId => {
-  await getBoard(boardId);
-
+  // eslint-disable-next-line no-console
+  console.log('*** Board is deleted', boardId);
   return true;
 };
 

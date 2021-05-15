@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const boardService = require('./board.service');
-const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
+const getBoard = require('../../utils/get.board');
 
 router.route('/').get(async (req, res) => {
   const boards = await boardService.getAll();
@@ -16,36 +16,25 @@ router.route('/').post(async (req, res) => {
   res.status(201).json(board);
 });
 
-router.route('/:boardId').put(async (req, res) => {
-  const { boardId } = req.params;
-  const { title, columns } = req.body;
-  try {
-    const board = await boardService.update({ id: boardId, title, columns });
-    res.status(200).json(board);
-  } catch (e) {
-    defaultHttpErrorHandler(e, res);
-  }
-});
+router.use('/:boardId', getBoard);
 
 router.route('/:boardId').get(async (req, res) => {
-  const { boardId } = req.params;
+  res.status(200).json(res.locals.board);
+});
 
-  try {
-    const board = await boardService.getBoard(boardId);
-    res.status(200).json(board);
-  } catch(e) {
-    defaultHttpErrorHandler(e, res);
-  }
+router.route('/:boardId').put(async (req, res) => {
+  const { title, columns } = req.body;
+  const board = await boardService.update(
+    res.locals.board,
+    { title, columns }
+  );
+
+  res.status(200).json(board);
 });
 
 router.route('/:boardId').delete(async (req, res) => {
-  const { boardId } = req.params;
-  try {
-    await boardService.deleteBoard(boardId);
-    res.sendStatus(204);
-  } catch (e) {
-    defaultHttpErrorHandler(e, res);
-  }
+  await boardService.deleteBoard(res.locals.board.id);
+  res.sendStatus(204);
 });
 
 module.exports = router;
