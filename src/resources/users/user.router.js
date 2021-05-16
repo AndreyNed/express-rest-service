@@ -3,11 +3,16 @@ const router = require('express').Router();
 const User = require('./user.model');
 const usersService = require('./user.service');
 const userMiddleware = require('./user.middleware');
+const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
 
 router.route('/').get(async (req, res) => {
-  const users = await usersService.getAll();
+  try {
+    const users = await usersService.getAll();
 
-  res.status(200).json(users.map(User.toResponse));
+    res.status(200).json(users.map(User.toResponse));
+  } catch (e) {
+    defaultHttpErrorHandler(e, res);
+  }
 });
 
 router.route('/').post(async (req, res) => {
