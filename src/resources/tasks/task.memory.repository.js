@@ -87,9 +87,9 @@ const update = async (task, {
     ...(title && { title }),
     ...(order && { order }),
     ...(description && { description }),
-    ...(userId && { userId }),
-    ...(boardId && { boardId }),
-    ...(columnId && { columnId }),
+    ...(userId !== undefined && { userId }),
+    ...(boardId !== undefined && { boardId }),
+    ...(columnId !== undefined && { columnId }),
   });
   try {
     const tasks = (await getAll()).map(cur => (
@@ -130,6 +130,25 @@ const clearColumnIdByBoard = async board => {
   }
 };
 
+const clearTaskUserId = async userId => {
+  let shouldUpdate = false;
+  const clear = () => {
+    shouldUpdate = true;
+    return null;
+  };
+  const tasks = (await getAll()).map(task => ({
+    ...task,
+    userId: task.userId === userId ? clear() : task.userId,
+  }));
+  if (shouldUpdate) {
+    try {
+      await saveTasks(tasks);
+    } catch (e) {
+      throwTaskRepositoryError(e, 'tasks were not updated');
+    }
+  }
+};
+
 // eslint-disable-next-line consistent-return
 const deleteTask = async taskId => {
   let tasks = await getAll();
@@ -162,4 +181,5 @@ module.exports = {
   deleteTask,
   clearColumnIdByBoard,
   deleteTasksByBoardId,
+  clearTaskUserId,
 };

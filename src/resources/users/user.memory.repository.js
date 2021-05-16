@@ -4,6 +4,7 @@ const User = require('./user.model');
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
+const taskRepo = require('../tasks/task.memory.repository');
 
 class UserMemoryRepositoryError {
   constructor(message = 'unknown error') {
@@ -81,6 +82,7 @@ const deleteUser = async userId => {
   try {
     users = users.filter(({ id }) => id !== userId);
     await saveUsers(users);
+    await taskRepo.clearTaskUserId(userId);
 
     return true;
   } catch (e) {
