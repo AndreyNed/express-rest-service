@@ -23,8 +23,10 @@ const throwUserRepositoryError = (e, message) => {
 const getAll = async () => {
   try {
     const usersData = await fs.readFile(fileName, 'utf-8');
-    if (!Array.isArray(usersData)) throw new UserMemoryRepositoryError('data should be an array');
-    return JSON.parse(usersData);
+    const users = JSON.parse(usersData);
+    if (!Array.isArray(users)) throw new UserMemoryRepositoryError('data should be an array');
+    
+    return users;
   } catch (e) {
     throwUserRepositoryError(e, 'users data is wrong or not available');
   }
