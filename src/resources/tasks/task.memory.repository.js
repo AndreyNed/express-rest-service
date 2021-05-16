@@ -143,6 +143,17 @@ const deleteTask = async taskId => {
   }
 };
 
+const deleteTasksByBoardId = async boardId => {
+  const tasks = (await getAll()).filter(
+    ({ boardId: taskBoardId }) => taskBoardId !== boardId
+  );
+  try {
+    await saveTasks(tasks);
+  } catch (e) {
+    throwTaskRepositoryError(e, 'tasks were not deleted');
+  }
+};
+
 module.exports = {
   getByBoardId,
   create,
@@ -150,4 +161,5 @@ module.exports = {
   update,
   deleteTask,
   clearColumnIdByBoard,
+  deleteTasksByBoardId,
 };

@@ -82,6 +82,7 @@ const deleteBoard = async boardId => {
   try {
     boards = boards.filter(({ id }) => id !== boardId);
     await saveBoards(boards);
+    await taskRepo.deleteTasksByBoardId(boardId);
 
     return true;
   } catch (e) {
