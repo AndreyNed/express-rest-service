@@ -35,7 +35,7 @@ const getBoard = async boardId => {
   const boards = await getAll();
   const board = boards.find(({ id }) => id === boardId);
   if (!board) {
-    throw Object.create({ status: 404, message: 'Boar not found' });
+    throw Object.create({ status: 404, message: 'Board not found' });
   }
 
   return board;

@@ -6,12 +6,13 @@ const taskService = require('./task.service');
 // res.locals should contain board already
 
 router.route('/').get(async (req, res) => {
-  const tasks = await taskService.getAll();
+  const tasks = await taskService.getByBoardId(res.locals.board.id);
 
   res.status(200).json(tasks);
 });
 
 router.route('/').post(async (req, res) => {
+  if (!req.body.boardId) req.body.boardId = res.locals.board.id;
   const task = await taskService.create(req.body);
   res.status(201).json(task);
 });
@@ -23,24 +24,9 @@ router.route('/:taskId').get(async (req, res) => {
 });
 
 router.route('/:taskId').put(async (req, res) => {
-  const {
-    title,
-    order,
-    description,
-    userId,
-    boardId,
-    columnId,
-  } = req.body;
-  const task = taskService.update(
+  const task = await taskService.update(
     res.locals.task,
-    {
-      title,
-      order,
-      description,
-      userId,
-      boardId,
-      columnId,
-    },
+    req.body,
   );
   res.status(200).json(task);
 });
