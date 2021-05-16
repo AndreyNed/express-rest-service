@@ -103,6 +103,33 @@ const update = async (task, {
   }
 }
 
+const clearColumnIdByBoard = async board => {
+  const { id: boardId, columns } = board;
+  const idList = columns.map(({ id: columnId }) => columnId);
+  let shouldUpdate = false;
+  const tasks = (await getAll()).map(task => {
+    const { boardId: taskBoardId } = task;
+    let { columnId } = task;
+    if (taskBoardId === boardId && !idList.includes(columnId)) {
+      columnId = null;
+      shouldUpdate = true;
+    }
+
+    return {
+      ...task,
+      columnId,
+    };
+  });
+
+  if (shouldUpdate) {
+    try {
+      await saveTasks(tasks);
+    } catch(e) {
+      throwTaskRepositoryError(e, 'tasks were not updated')
+    }
+  }
+};
+
 // eslint-disable-next-line consistent-return
 const deleteTask = async taskId => {
   let tasks = await getAll();
@@ -116,4 +143,11 @@ const deleteTask = async taskId => {
   }
 };
 
-module.exports = { getByBoardId, create, getTask, update, deleteTask };
+module.exports = {
+  getByBoardId,
+  create,
+  getTask,
+  update,
+  deleteTask,
+  clearColumnIdByBoard,
+};

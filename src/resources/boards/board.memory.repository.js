@@ -4,6 +4,7 @@ const Board = require('./board.model');
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
+const taskRepo = require('../tasks/task.memory.repository');
 
 class BoardMemoryRepositoryError {
   constructor(message = 'unknown error') {
@@ -67,6 +68,7 @@ const update = async (board, { title, columns }) => {
       cur.id === board.id ? updated : cur
     ));
     await saveBoards(boards);
+    await taskRepo.clearColumnIdByBoard(updated);
 
     return updated;
   } catch (e) {
