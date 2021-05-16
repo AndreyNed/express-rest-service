@@ -1,12 +1,9 @@
-const fs = require('fs').promises;
 const path = require('path');
 
 const User = require('./user.model');
 const { DATA_PATH } = require('../../common/config');
+const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
-
-const fileName = path.resolve(DATA_PATH, 'users.json');
-const saveUsers = createSaveDataToFile(fileName);
 
 class UserMemoryRepositoryError {
   constructor(message = 'unknown error') {
@@ -14,6 +11,10 @@ class UserMemoryRepositoryError {
     this.message = `User memory repository error: ${message}`;
   }
 }
+
+const fileName = path.resolve(DATA_PATH, 'users.json');
+const readUsers = createGetDataFromFile(fileName, UserMemoryRepositoryError);
+const saveUsers = createSaveDataToFile(fileName);
 
 const throwUserRepositoryError = (e, message) => {
   // eslint-disable-next-line no-console
@@ -24,11 +25,7 @@ const throwUserRepositoryError = (e, message) => {
 // eslint-disable-next-line consistent-return
 const getAll = async () => {
   try {
-    const usersData = await fs.readFile(fileName, 'utf-8');
-    const users = JSON.parse(usersData);
-    if (!Array.isArray(users)) throw new UserMemoryRepositoryError('data should be an array');
-
-    return users;
+    return await readUsers();
   } catch (e) {
     throwUserRepositoryError(e, 'users data is wrong or not available');
   }
