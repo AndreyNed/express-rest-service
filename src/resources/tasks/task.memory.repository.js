@@ -17,17 +17,15 @@ const readTasks = createGetDataFromFile(fileName, TaskMemoryRepositoryError);
 const saveTasks = createSaveDataToFile(fileName);
 
 const throwTaskRepositoryError = (e, message) => {
-  // eslint-disable-next-line no-console
-  console.error(e);
+  process.stderr.write(e);
   throw new TaskMemoryRepositoryError(message);
 };
 
-// eslint-disable-next-line consistent-return
 const getAll = async () => {
   try {
     return await readTasks();
   } catch (e) {
-    throwTaskRepositoryError(e, 'tasks data is wrong or not available');
+    return throwTaskRepositoryError(e, 'tasks data is wrong or not available');
   }
 };
 
@@ -52,7 +50,6 @@ const create = async ({
   userId,
   boardId,
   columnId,
-  // eslint-disable-next-line consistent-return
 }) => {
   const tasks = await getAll();
   const newTask = new Task({
@@ -69,7 +66,7 @@ const create = async ({
 
     return newTask;
   } catch (e) {
-    throwTaskRepositoryError(e, 'task was not created');
+    return throwTaskRepositoryError(e, 'task was not created');
   }
 };
 
@@ -80,7 +77,6 @@ const update = async (task, {
   userId,
   boardId,
   columnId,
-  // eslint-disable-next-line consistent-return
 }) => {
   const updated = new Task({
     ...task,
@@ -99,7 +95,7 @@ const update = async (task, {
 
     return updated;
   } catch (e) {
-    throwTaskRepositoryError(e, 'task was not updated');
+    return throwTaskRepositoryError(e, 'task was not updated');
   }
 }
 
@@ -149,7 +145,6 @@ const clearTaskUserId = async userId => {
   }
 };
 
-// eslint-disable-next-line consistent-return
 const deleteTask = async taskId => {
   let tasks = await getAll();
   try {
@@ -158,7 +153,7 @@ const deleteTask = async taskId => {
 
     return true;
   } catch (e) {
-    throwTaskRepositoryError(e, 'task was not deleted');
+    return throwTaskRepositoryError(e, 'task was not deleted');
   }
 };
 

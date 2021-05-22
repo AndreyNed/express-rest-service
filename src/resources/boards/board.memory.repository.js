@@ -18,17 +18,15 @@ const readBoards = createGetDataFromFile(fileName, BoardMemoryRepositoryError);
 const saveBoards = createSaveDataToFile(fileName);
 
 const throwBoardRepositoryError = (e, message) => {
-  // eslint-disable-next-line no-console
-  console.error(e);
+  process.stderr.write(e);
   throw new BoardMemoryRepositoryError(message);
 };
 
-// eslint-disable-next-line consistent-return
 const getAll = async () => {
   try {
     return await readBoards();
   } catch (e) {
-    throwBoardRepositoryError(e, 'boards data is wrong or not available');
+    return throwBoardRepositoryError(e, 'boards data is wrong or not available');
   }
 };
 
@@ -42,7 +40,6 @@ const getBoard = async boardId => {
   return board;
 };
 
-// eslint-disable-next-line consistent-return
 const create = async ({ title, columns }) => {
   const boards = await getAll();
   const newBoard = new Board({ title, columns });
@@ -52,11 +49,10 @@ const create = async ({ title, columns }) => {
 
     return newBoard;
   } catch (e) {
-    throwBoardRepositoryError(e, 'board was not created');
+    return throwBoardRepositoryError(e, 'board was not created');
   }
 };
 
-// eslint-disable-next-line consistent-return
 const update = async (board, { title, columns }) => {
   const updated = new Board({
     ...board,
@@ -72,11 +68,10 @@ const update = async (board, { title, columns }) => {
 
     return updated;
   } catch (e) {
-    throwBoardRepositoryError(e, 'board was not updated');
+    return throwBoardRepositoryError(e, 'board was not updated');
   }
 }
 
-// eslint-disable-next-line consistent-return
 const deleteBoard = async boardId => {
   let boards = await getAll();
   try {
@@ -86,7 +81,7 @@ const deleteBoard = async boardId => {
 
     return true;
   } catch (e) {
-    throwBoardRepositoryError(e, 'board was not deleted');
+    return throwBoardRepositoryError(e, 'board was not deleted');
   }
 };
 

@@ -18,17 +18,15 @@ const readUsers = createGetDataFromFile(fileName, UserMemoryRepositoryError);
 const saveUsers = createSaveDataToFile(fileName);
 
 const throwUserRepositoryError = (e, message) => {
-  // eslint-disable-next-line no-console
-  console.error(e);
+  process.stderr.write(e);
   throw new UserMemoryRepositoryError(message);
 };
 
-// eslint-disable-next-line consistent-return
 const getAll = async () => {
   try {
     return await readUsers();
   } catch (e) {
-    throwUserRepositoryError(e, 'users data is wrong or not available');
+    return throwUserRepositoryError(e, 'users data is wrong or not available');
   }
 };
 
@@ -42,7 +40,6 @@ const getUser = async userId => {
   return user;
 };
 
-// eslint-disable-next-line consistent-return
 const create = async ({ name, login, password }) => {
   const users = await getAll();
   const newUser = new User({ name, login, password });
@@ -52,11 +49,10 @@ const create = async ({ name, login, password }) => {
 
     return newUser;
   } catch (e) {
-    throwUserRepositoryError(e, 'user was not created');
+    return throwUserRepositoryError(e, 'user was not created');
   }
 };
 
-// eslint-disable-next-line consistent-return
 const update = async (user, { name, login, password }) => {
   const updated = new User({
     ...user,
@@ -72,11 +68,10 @@ const update = async (user, { name, login, password }) => {
 
     return updated;
   } catch (e) {
-    throwUserRepositoryError(e, 'user was not updated');
+    return throwUserRepositoryError(e, 'user was not updated');
   }
 }
 
-// eslint-disable-next-line consistent-return
 const deleteUser = async userId => {
   let users = await getAll();
   try {
@@ -86,7 +81,7 @@ const deleteUser = async userId => {
 
     return true;
   } catch (e) {
-    throwUserRepositoryError(e, 'user was not deleted');
+    return throwUserRepositoryError(e, 'user was not deleted');
   }
 };
 
