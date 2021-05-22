@@ -1,9 +1,9 @@
-const fs = require('fs').promises;
+const fs = require('fs');
 
 const createSaveDataToFile = filename => async data => {
   const jsonData = JSON.stringify(data);
 
-  await fs.writeFile(filename, jsonData, 'utf-8');
+  await fs.writeFileSync(filename, jsonData, 'utf-8');
 };
 
 module.exports = createSaveDataToFile;
