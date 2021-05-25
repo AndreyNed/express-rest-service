@@ -1,6 +1,5 @@
 const path = require('path');
 
-const User = require('./user.model');
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
@@ -92,15 +91,12 @@ const getUser = async userId => {
  * Creates new user
  * @exports
  * @async
- * @param {string} name - The user name
- * @param {string} login - The user login
- * @param {string} password - The user password
+ * @param {User} newUser - the new user object
  * @returns Promise<User> - The Promise resolved as User
  * @throws {UserMemoryRepositoryError}
  */
-const create = async ({ name, login, password }) => {
+const create = async newUser => {
   const users = await getAll();
-  const newUser = new User({ name, login, password });
   users.push(newUser);
   try {
     await saveUsers(users);
@@ -115,27 +111,18 @@ const create = async ({ name, login, password }) => {
  * Updates user
  * @exports
  * @async
- * @param {User} user - The user
- * @param {string} name - New user's name
- * @param {string} login - New user's login
- * @param {string} password - New user's password
+ * @param {User} updatedUser - The updated user
  * @returns Promise<User> - Updated user
  * @throws {UserMemoryRepositoryError}
  */
-const update = async (user, { name, login, password }) => {
-  const updated = new User({
-    ...user,
-    ...(name && { name }),
-    ...(login && { login }),
-    ...(password && { password }),
-  });
+const update = async updatedUser => {
   try {
     const users = (await getAll()).map(cur => (
-      cur.id === user.id ? updated : cur
+      cur.id === updatedUser.id ? updatedUser : cur
     ));
     await saveUsers(users);
 
-    return updated;
+    return updatedUser;
   } catch (e) {
     return throwUserRepositoryError(e, 'user was not updated');
   }

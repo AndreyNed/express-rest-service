@@ -1,25 +1,45 @@
 const usersRepo = require('./user.memory.repository');
+const User = require('./user.model');
 
 /**
  * Gets all users
+ * @exports
  * @returns {User[]} - array of users
  */
 const getAll = () => usersRepo.getAll();
 
 /**
  * Creates new user
- * @param {User} payload - data for new user
+ * @exports
+ * @param {string} name - The user name
+ * @param {string} login - The user login
+ * @param {string} password - The user password
  * @returns Promise<User> - new User
  */
-const create = payload => usersRepo.create(payload);
+const create = ({ name, login, password }) => {
+  const newUser = new User({ name, login, password });
+
+  return usersRepo.create(newUser);
+};
 
 /**
  * Updates user
- * @param {User} user - the existed user data
- * @param {User} payload - the new user's data to change
+ * @param {User} user - The user
+ * @param {string} name - New user's name
+ * @param {string} login - New user's login
+ * @param {string} password - New user's password
  * @returns Promise<User> - updated User
  */
-const update = (user, payload) => usersRepo.update(user, payload);
+const update = (user, { name, login, password }) => {
+  const updatedUser = new User({
+    ...user,
+    ...(name && { name }),
+    ...(login && { login }),
+    ...(password && { password }),
+  });
+
+  return usersRepo.update(updatedUser);
+};
 
 /**
  * Gets user by id
