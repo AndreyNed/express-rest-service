@@ -3,7 +3,7 @@ const { v4: uuidV4 } = require('uuid');
 /**
  * Represents type User
  * @typedef {Object} User
- * @property {string} id - The user id
+ * @property {string} [id] - The user id
  * @property {string} name - The user name
  * @property {string} login - The user login
  * @property {string} [password] - The user password

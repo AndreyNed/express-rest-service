@@ -75,7 +75,7 @@ const getAll = async () => {
  * @exports
  * @async
  * @param {string} userId - The user id
- * @returns {User} - The user
+ * @returns Promise<User> - The user
  * @throws {Object}
  */
 const getUser = async userId => {
@@ -95,7 +95,7 @@ const getUser = async userId => {
  * @param {string} name - The user name
  * @param {string} login - The user login
  * @param {string} password - The user password
- * @returns {User} - The user
+ * @returns Promise<User> - The Promise resolved as User
  * @throws {UserMemoryRepositoryError}
  */
 const create = async ({ name, login, password }) => {
@@ -119,7 +119,7 @@ const create = async ({ name, login, password }) => {
  * @param {string} name - New user's name
  * @param {string} login - New user's login
  * @param {string} password - New user's password
- * @returns {User} - Updated user
+ * @returns Promise<User> - Updated user
  * @throws {UserMemoryRepositoryError}
  */
 const update = async (user, { name, login, password }) => {
@@ -146,7 +146,7 @@ const update = async (user, { name, login, password }) => {
  * @exports
  * @async
  * @param {string} userId - The user's id
- * @returns {boolean} - true if user is removed successfully
+ * @returns Promise<boolean> - true if user is removed successfully
  * @throws {UserMemoryRepositoryError}
  */
 const deleteUser = async userId => {
