@@ -24,7 +24,7 @@ router.route('/').post(async (req, res) => {
 });
 
 /** Finds user by params.userId and sets to res.locals.user */
-router.route('/:userId').all(middlewareGetUser);
+router.use('/:userId', middlewareGetUser);
 
 /** Returns user by params.userId without password */
 router.route('/:userId').get(async (req, res) => {
