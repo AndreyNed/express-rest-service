@@ -57,6 +57,7 @@ const throwUserRepositoryError = (e, message) => {
 
 /**
  * Returns all users
+ * @exports
  * @async
  * @returns {User[]} - Array of users
  * @throws UserMemoryRepositoryError
@@ -71,6 +72,7 @@ const getAll = async () => {
 
 /**
  * Returns user by id
+ * @exports
  * @async
  * @param {string} userId - The user id
  * @returns {User} - The user
@@ -88,6 +90,7 @@ const getUser = async userId => {
 
 /**
  * Creates new user
+ * @exports
  * @async
  * @param {string} name - The user name
  * @param {string} login - The user login
@@ -108,6 +111,17 @@ const create = async ({ name, login, password }) => {
   }
 };
 
+/**
+ * Updates user
+ * @exports
+ * @async
+ * @param {User} user - The user
+ * @param {string} name - New user's name
+ * @param {string} login - New user's login
+ * @param {string} password - New user's password
+ * @returns {User} - Updated user
+ * @throws {UserMemoryRepositoryError}
+ */
 const update = async (user, { name, login, password }) => {
   const updated = new User({
     ...user,
@@ -127,6 +141,14 @@ const update = async (user, { name, login, password }) => {
   }
 }
 
+/**
+ * Removes user by user id
+ * @exports
+ * @async
+ * @param {string} userId - The user's id
+ * @returns {boolean} - true if user is removed successfully
+ * @throws {UserMemoryRepositoryError}
+ */
 const deleteUser = async userId => {
   let users = await getAll();
   try {
