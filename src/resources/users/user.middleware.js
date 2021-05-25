@@ -5,10 +5,9 @@ const defaultHttpErrorHandler = require('../../utils/default.http.error.handler'
  * Middleware - gets user by `req.params.id` and sets to `req`
  * @exports
  * @async
- * @param {XMLHttpRequestResponseType} req - The http request
- * @param {XMLHttpRequestResponseType} res - The http request
- * @param {function} next - used to proceed to next request handler
- * @returns {void}
+ * @param {import('express').Request} req - The http request
+ * @param {import('express').Response} res - The http response
+ * @param {import('express').NextFunction} next - used to proceed to next request handler
  */
 const getUser = async (req, res, next) => {
   const { userId } = req.params;

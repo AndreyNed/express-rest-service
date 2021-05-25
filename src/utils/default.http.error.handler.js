@@ -8,7 +8,7 @@
 /**
  * Sends response with an error
  * @param {HttpError} e - The error object
- * @param {XMLHttpRequestResponseType} res - The http response object
+ * @param {import('express').Response} res - The http response object
  * @returns {void}
  */
 const defaultHttpErrorHandler = (e, res) => {

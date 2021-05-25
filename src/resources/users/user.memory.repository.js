@@ -92,16 +92,16 @@ const getUser = async userId => {
  * @exports
  * @async
  * @param {User} newUser - the new user object
- * @returns Promise<User> - The Promise resolved as User
+ * @returns Promise<boolean> - The Promise resolved as success flag
  * @throws {UserMemoryRepositoryError}
  */
 const create = async newUser => {
-  const users = await getAll();
-  users.push(newUser);
   try {
+    const users = await getAll();
+    users.push(newUser);
     await saveUsers(users);
 
-    return newUser;
+    return true;
   } catch (e) {
     return throwUserRepositoryError(e, 'user was not created');
   }
@@ -112,7 +112,7 @@ const create = async newUser => {
  * @exports
  * @async
  * @param {User} updatedUser - The updated user
- * @returns Promise<User> - Updated user
+ * @returns Promise<boolean> - Promise resolves to flag of success
  * @throws {UserMemoryRepositoryError}
  */
 const update = async updatedUser => {
@@ -122,7 +122,7 @@ const update = async updatedUser => {
     ));
     await saveUsers(users);
 
-    return updatedUser;
+    return true;
   } catch (e) {
     return throwUserRepositoryError(e, 'user was not updated');
   }

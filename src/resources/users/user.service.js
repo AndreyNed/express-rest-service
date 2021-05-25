@@ -16,10 +16,11 @@ const getAll = () => usersRepo.getAll();
  * @param {string} password - The user password
  * @returns Promise<User> - new User
  */
-const create = ({ name, login, password }) => {
+const create = async ({ name, login, password }) => {
   const newUser = new User({ name, login, password });
+  await usersRepo.create(newUser);
 
-  return usersRepo.create(newUser);
+  return newUser;
 };
 
 /**
@@ -30,15 +31,16 @@ const create = ({ name, login, password }) => {
  * @param {string} password - New user's password
  * @returns Promise<User> - updated User
  */
-const update = (user, { name, login, password }) => {
+const update = async (user, { name, login, password }) => {
   const updatedUser = new User({
     ...user,
     ...(name && { name }),
     ...(login && { login }),
     ...(password && { password }),
   });
+  await usersRepo.update(updatedUser);
 
-  return usersRepo.update(updatedUser);
+  return updatedUser;
 };
 
 /**
