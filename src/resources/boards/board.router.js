@@ -4,6 +4,7 @@ const boardService = require('./board.service');
 const boardMiddleware = require('./board.middleware');
 const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
 
+/** Returns all boards */
 router.route('/').get(async (req, res) => {
   try {
     const boards = await boardService.getAll();
@@ -14,6 +15,7 @@ router.route('/').get(async (req, res) => {
   }
 });
 
+/** Creates new board and returns it */
 router.route('/').post(async (req, res) => {
   try {
     const board = await boardService.create(req.body);
@@ -24,12 +26,15 @@ router.route('/').post(async (req, res) => {
   }
 });
 
+/** Finds board by params.boardId and sets it to res.locals.board */
 router.use('/:boardId', boardMiddleware.getBoard);
 
+/** Returns board by board id */
 router.route('/:boardId').get(async (req, res) => {
   res.status(200).json(res.locals.board);
 });
 
+/** updates board with req.body payload and returns updated data */
 router.route('/:boardId').put(async (req, res) => {
   try {
     const board = await boardService.update(
@@ -43,6 +48,7 @@ router.route('/:boardId').put(async (req, res) => {
   }
 });
 
+/** removes board by params.boardId */
 router.route('/:boardId').delete(async (req, res) => {
   try {
     await boardService.deleteBoard(res.locals.board.id);

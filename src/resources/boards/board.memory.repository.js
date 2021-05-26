@@ -4,9 +4,21 @@ const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
 
+/**
+ * Represents board repository error
+ * @class
+ */
 class BoardMemoryRepositoryError {
+  /**
+   * Creates a board repository error object
+   * @constructor
+   * @param {string} message - The message
+   */
   constructor(message = 'unknown error') {
+    /** @member {number} */
     this.status = 503;
+
+    /** @member {string} */
     this.message = `Board memory repository error: ${message}`;
   }
 }
@@ -15,11 +27,24 @@ const fileName = path.resolve(DATA_PATH, 'boards.json');
 const readBoards = createGetDataFromFile(fileName, BoardMemoryRepositoryError);
 const saveBoards = createSaveDataToFile(fileName);
 
+/**
+ * Throws board repository error with log
+ * @param {Error} e - The error object
+ * @param {string} message - The provided error message
+ * @throws {BoardMemoryRepositoryError}
+ */
 const throwBoardRepositoryError = (e, message) => {
   process.stderr.write(e);
   throw new BoardMemoryRepositoryError(message);
 };
 
+/**
+ * Selects all boards
+ * @exports
+ * @async
+ * @returns {Board[]|[]|void}
+ * @throws {BoardMemoryRepositoryError}
+ */
 const getAll = async () => {
   try {
     return await readBoards();
@@ -28,6 +53,14 @@ const getAll = async () => {
   }
 };
 
+/**
+ * Selects board by id
+ * @exports
+ * @async
+ * @param {string} boardId - The board id
+ * @returns {Promise<Board|null|void>}
+ * @throws {Object}
+ */
 const getBoard = async boardId => {
   const boards = await getAll();
   const board = boards.find(({ id }) => id === boardId);
@@ -38,6 +71,14 @@ const getBoard = async boardId => {
   return board;
 };
 
+/**
+ * Creates new board
+ * @exports
+ * @async
+ * @param {Board} newBoard - The new board
+ * @returns {Promise<boolean|void>} - The successful flag
+ * @throws {BoardMemoryRepositoryError}
+ */
 const create = async newBoard => {
   const boards = await getAll();
   boards.push(newBoard);
@@ -50,6 +91,14 @@ const create = async newBoard => {
   }
 };
 
+/**
+ * Updates board with provided changes
+ * @exports
+ * @async
+ * @param {Board} updatedBoard - The updated board
+ * @returns {Promise<boolean|void>} - The flag of successful operation
+ * @throws {BoardMemoryRepositoryError}
+ */
 const update = async updatedBoard => {
   try {
     const boards = (await getAll()).map(cur => (
@@ -63,6 +112,13 @@ const update = async updatedBoard => {
   }
 }
 
+/**
+ * Removes board by id
+ * @exports
+ * @async
+ * @param {string} boardId - The board id
+ * @returns {Promise<boolean|void>}
+ */
 const deleteBoard = async boardId => {
   let boards = await getAll();
   try {

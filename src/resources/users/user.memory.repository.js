@@ -4,22 +4,62 @@ const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
 
+/**
+ * Represents class UserMemoryRepositoryError
+ */
 class UserMemoryRepositoryError {
+  /**
+   * Creates an error's object
+   * @constructor
+   * @param {string} message - The message
+   */
   constructor(message = 'unknown error') {
+    /** @member {number} */
     this.status = 503;
+
+    /** @member {string} */
     this.message = `User memory repository error: ${message}`;
   }
 }
 
+/**
+ * Represents file name for users data
+ * @type string
+ */
 const fileName = path.resolve(DATA_PATH, 'users.json');
+
+/**
+ * Represents function for reading users data
+ * @async
+ * @type function
+ */
 const readUsers = createGetDataFromFile(fileName, UserMemoryRepositoryError);
+
+/**
+ * Represents function for writing users data
+ * @async
+ * @type function
+ */
 const saveUsers = createSaveDataToFile(fileName);
 
+/**
+ * Throws UserMemoryRepositoryError
+ * @param {Error} e - The error object
+ * @param {string} message - The message
+ * @throws UserMemoryRepositoryError
+ */
 const throwUserRepositoryError = (e, message) => {
   process.stderr.write(e);
   throw new UserMemoryRepositoryError(message);
 };
 
+/**
+ * Returns all users
+ * @exports
+ * @async
+ * @returns {User[]} - Array of users
+ * @throws UserMemoryRepositoryError
+ */
 const getAll = async () => {
   try {
     return await readUsers();
@@ -28,6 +68,14 @@ const getAll = async () => {
   }
 };
 
+/**
+ * Returns user by id
+ * @exports
+ * @async
+ * @param {string} userId - The user id
+ * @returns Promise<User> - The user
+ * @throws {Object}
+ */
 const getUser = async userId => {
   const users = await getAll();
   const user = users.find(({ id }) => id === userId);
@@ -38,6 +86,14 @@ const getUser = async userId => {
   return user;
 };
 
+/**
+ * Creates new user
+ * @exports
+ * @async
+ * @param {User} newUser - the new user object
+ * @returns Promise<boolean> - The Promise resolved as success flag
+ * @throws {UserMemoryRepositoryError}
+ */
 const create = async newUser => {
   try {
     const users = await getAll();
@@ -50,6 +106,14 @@ const create = async newUser => {
   }
 };
 
+/**
+ * Updates user
+ * @exports
+ * @async
+ * @param {User} updatedUser - The updated user
+ * @returns Promise<boolean> - Promise resolves to flag of success
+ * @throws {UserMemoryRepositoryError}
+ */
 const update = async updatedUser => {
   try {
     const users = (await getAll()).map(cur => (
@@ -63,6 +127,14 @@ const update = async updatedUser => {
   }
 }
 
+/**
+ * Removes user by user id
+ * @exports
+ * @async
+ * @param {string} userId - The user's id
+ * @returns Promise<boolean> - true if user is removed successfully
+ * @throws {UserMemoryRepositoryError}
+ */
 const deleteUser = async userId => {
   let users = await getAll();
   try {

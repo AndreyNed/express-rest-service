@@ -4,9 +4,21 @@ const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
 
+/**
+ * Represents task memory repository error
+ * @class
+ */
 class TaskMemoryRepositoryError {
+  /**
+   * Creates task memory repository error
+   * @constructor
+   * @param {string} message - the message
+   */
   constructor(message = 'unknown error') {
+    /**  @member {number} */
     this.status = 503;
+
+    /** @member {string} */
     this.message = `Task memory repository error: ${message}`;
   }
 }
@@ -15,11 +27,23 @@ const fileName = path.resolve(DATA_PATH, 'tasks.json');
 const readTasks = createGetDataFromFile(fileName, TaskMemoryRepositoryError);
 const saveTasks = createSaveDataToFile(fileName);
 
+/**
+ * Throws task memory repository error
+ * @param {Error} e - the error object
+ * @param {string} message - the message
+ * @throws {TaskMemoryRepositoryError}
+ */
 const throwTaskRepositoryError = (e, message) => {
   process.stderr.write(e);
   throw new TaskMemoryRepositoryError(message);
 };
 
+/**
+ * Selects all tasks
+ * @async
+ * @returns {Promise<Task[]|[]|void>} - list of all tasks
+ * @throws {TaskMemoryRepositoryError}
+ */
 const getAll = async () => {
   try {
     return await readTasks();
@@ -28,13 +52,29 @@ const getAll = async () => {
   }
 };
 
+/**
+ * Selects tasks by board id
+ * @exports
+ * @async
+ * @param {string} boardId - The board id
+ * @returns {Promise<Task[]|[]|void>} - list of tasks for board
+ */
 const getByBoardId = async boardId => {
   const tasks = await getAll();
 
   return tasks.filter(task => task.boardId === boardId)
 };
 
+/**
+ * Returns task by id and board id
+ * @exports
+ * @async
+ * @param {string} taskId - the task id
+ * @param {string} boardId - the board id
+ * @returns {Promise<Task>}
+ */
 const getTask = async (taskId, boardId) => {
+  /** @type {Task[]} */
   const tasks = await getByBoardId(boardId);
 
   const task = tasks.find(item => item.id === taskId);
@@ -46,6 +86,14 @@ const getTask = async (taskId, boardId) => {
   return task;
 };
 
+/**
+ * Creates new task
+ * @exports
+ * @async
+ * @param {Task} newTask - the new task
+ * @returns {Promise<boolean|void>} - flag of success
+ * @throws {TaskMemoryRepositoryError}
+ */
 const create = async newTask => {
   try {
     const tasks = await getAll();
@@ -58,6 +106,14 @@ const create = async newTask => {
   }
 };
 
+/**
+ * Updates tasks
+ * @exports
+ * @async
+ * @param {Task} updatedTask - The updated task
+ * @returns {Promise<boolean|void>} - the flag of success
+ * @throws {TaskMemoryRepositoryError}
+ */
 const update = async updatedTask => {
   try {
     const tasks = (await getAll()).map(cur => (
@@ -71,6 +127,12 @@ const update = async updatedTask => {
   }
 }
 
+/**
+ * Clears columnId field according to existing columns by board
+ * @exports
+ * @async
+ * @param {Board} board
+ */
 const clearColumnIdByBoard = async board => {
   const { id: boardId, columns } = board;
   const idList = columns.map(({ id: columnId }) => columnId);
@@ -98,6 +160,12 @@ const clearColumnIdByBoard = async board => {
   }
 };
 
+/**
+ * Clears userId field in tasks
+ * @exports
+ * @async
+ * @param {string} userId - the user id
+ */
 const clearTaskUserId = async userId => {
   let shouldUpdate = false;
   const clear = () => {
@@ -117,6 +185,14 @@ const clearTaskUserId = async userId => {
   }
 };
 
+/**
+ * Removes task by id
+ * @exports
+ * @async
+ * @param {string} taskId - the task id
+ * @returns {Promise<boolean|void>} - the flag of success
+ * @throws {TaskMemoryRepositoryError}
+ */
 const deleteTask = async taskId => {
   try {
     let tasks = await getAll();
@@ -129,6 +205,12 @@ const deleteTask = async taskId => {
   }
 };
 
+/**
+ * Removes tasks by board id (when board was deleted)
+ * @exports
+ * @async
+ * @param {string} boardId - the board id
+ */
 const deleteTasksByBoardId = async boardId => {
   const tasks = (await getAll()).filter(
     task => task.boardId !== boardId

@@ -5,6 +5,7 @@ const usersService = require('./user.service');
 const userMiddleware = require('./user.middleware');
 const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
 
+/** Returns all users without passwords */
 router.route('/').get(async (req, res) => {
   try {
     const users = await usersService.getAll();
@@ -15,6 +16,7 @@ router.route('/').get(async (req, res) => {
   }
 });
 
+/** Creates new user and returns their data without passwords */
 router.route('/').post(async (req, res) => {
   try {
     const user = await usersService.create(req.body);
@@ -25,12 +27,15 @@ router.route('/').post(async (req, res) => {
   }
 });
 
+/** Finds user by params.userId and sets to res.locals.user */
 router.use('/:userId', userMiddleware.getUser);
 
+/** Returns user by params.userId without password */
 router.route('/:userId').get(async (req, res) => {
   res.status(200).json(User.toResponse(res.locals.user));
 });
 
+/** Updates user with new data and returns data without password */
 router.route('/:userId').put(async (req, res) => {
   try {
     const user = await usersService.update(
@@ -44,6 +49,7 @@ router.route('/:userId').put(async (req, res) => {
   }
 });
 
+/** Removes user by params.userId */
 router.route('/:userId').delete(async (req, res) => {
   try {
     await usersService.deleteUser(res.locals.user.id);
