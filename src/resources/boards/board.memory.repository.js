@@ -1,10 +1,8 @@
 const path = require('path');
 
-const Board = require('./board.model');
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
-const taskRepo = require('../tasks/task.memory.repository');
 
 class BoardMemoryRepositoryError {
   constructor(message = 'unknown error') {
@@ -40,33 +38,26 @@ const getBoard = async boardId => {
   return board;
 };
 
-const create = async ({ title, columns }) => {
+const create = async newBoard => {
   const boards = await getAll();
-  const newBoard = new Board({ title, columns });
   boards.push(newBoard);
   try {
     await saveBoards(boards);
 
-    return newBoard;
+    return true;
   } catch (e) {
     return throwBoardRepositoryError(e, 'board was not created');
   }
 };
 
-const update = async (board, { title, columns }) => {
-  const updated = new Board({
-    ...board,
-    ...(title && { title }),
-    ...(columns && { columns }),
-  });
+const update = async updatedBoard => {
   try {
     const boards = (await getAll()).map(cur => (
-      cur.id === board.id ? updated : cur
+      cur.id === updatedBoard.id ? updatedBoard : cur
     ));
     await saveBoards(boards);
-    await taskRepo.clearColumnIdByBoard(updated);
 
-    return updated;
+    return true;
   } catch (e) {
     return throwBoardRepositoryError(e, 'board was not updated');
   }
@@ -77,7 +68,6 @@ const deleteBoard = async boardId => {
   try {
     boards = boards.filter(({ id }) => id !== boardId);
     await saveBoards(boards);
-    await taskRepo.deleteTasksByBoardId(boardId);
 
     return true;
   } catch (e) {
