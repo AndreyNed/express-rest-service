@@ -113,6 +113,13 @@ const update = async updatedBoard => {
   }
 }
 
+/**
+ * Removes board by id
+ * @exports
+ * @async
+ * @param {string} boardId - The board id
+ * @returns {Promise<boolean|void>}
+ */
 const deleteBoard = async boardId => {
   let boards = await getAll();
   try {
