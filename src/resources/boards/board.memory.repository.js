@@ -100,7 +100,6 @@ const create = async newBoard => {
  * @throws {BoardMemoryRepositoryError}
  */
 const update = async updatedBoard => {
-
   try {
     const boards = (await getAll()).map(cur => (
       cur.id === updatedBoard.id ? updatedBoard : cur
