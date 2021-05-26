@@ -1,10 +1,8 @@
 const path = require('path');
 
-const User = require('./user.model');
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
-const taskRepo = require('../tasks/task.memory.repository');
 
 class UserMemoryRepositoryError {
   constructor(message = 'unknown error') {
@@ -40,33 +38,26 @@ const getUser = async userId => {
   return user;
 };
 
-const create = async ({ name, login, password }) => {
-  const users = await getAll();
-  const newUser = new User({ name, login, password });
-  users.push(newUser);
+const create = async newUser => {
   try {
+    const users = await getAll();
+    users.push(newUser);
     await saveUsers(users);
 
-    return newUser;
+    return true;
   } catch (e) {
     return throwUserRepositoryError(e, 'user was not created');
   }
 };
 
-const update = async (user, { name, login, password }) => {
-  const updated = new User({
-    ...user,
-    ...(name && { name }),
-    ...(login && { login }),
-    ...(password && { password }),
-  });
+const update = async updatedUser => {
   try {
     const users = (await getAll()).map(cur => (
-      cur.id === user.id ? updated : cur
+      cur.id === updatedUser.id ? updatedUser : cur
     ));
     await saveUsers(users);
 
-    return updated;
+    return true;
   } catch (e) {
     return throwUserRepositoryError(e, 'user was not updated');
   }
@@ -77,7 +68,6 @@ const deleteUser = async userId => {
   try {
     users = users.filter(({ id }) => id !== userId);
     await saveUsers(users);
-    await taskRepo.clearTaskUserId(userId);
 
     return true;
   } catch (e) {

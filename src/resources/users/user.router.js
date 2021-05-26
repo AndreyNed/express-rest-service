@@ -16,9 +16,13 @@ router.route('/').get(async (req, res) => {
 });
 
 router.route('/').post(async (req, res) => {
-  const user = await usersService.create(req.body);
+  try {
+    const user = await usersService.create(req.body);
 
-  res.status(201).json(User.toResponse(user));
+    res.status(201).json(User.toResponse(user));
+  } catch (e) {
+    defaultHttpErrorHandler(e, res);
+  }
 });
 
 router.use('/:userId', userMiddleware.getUser);
@@ -28,18 +32,26 @@ router.route('/:userId').get(async (req, res) => {
 });
 
 router.route('/:userId').put(async (req, res) => {
-  const user = await usersService.update(
-    res.locals.user,
-    req.body,
-  );
+  try {
+    const user = await usersService.update(
+      res.locals.user,
+      req.body,
+    );
 
-  res.status(200).json(User.toResponse(user));
+    res.status(200).json(User.toResponse(user));
+  } catch (e) {
+    defaultHttpErrorHandler(e, res);
+  }
 });
 
 router.route('/:userId').delete(async (req, res) => {
-  await usersService.deleteUser(res.locals.user.id);
+  try {
+    await usersService.deleteUser(res.locals.user.id);
 
-  res.sendStatus(204);
+    res.sendStatus(204);
+  } catch(e) {
+    defaultHttpErrorHandler(e, res);
+  }
 });
 
 module.exports = router;
