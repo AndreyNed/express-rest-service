@@ -127,6 +127,12 @@ const update = async updatedTask => {
   }
 }
 
+/**
+ * Clears columnId field according to existing columns by board
+ * @exports
+ * @async
+ * @param {Board} board
+ */
 const clearColumnIdByBoard = async board => {
   const { id: boardId, columns } = board;
   const idList = columns.map(({ id: columnId }) => columnId);
@@ -154,6 +160,12 @@ const clearColumnIdByBoard = async board => {
   }
 };
 
+/**
+ * Clears userId field in tasks
+ * @exports
+ * @async
+ * @param {string} userId - the user id
+ */
 const clearTaskUserId = async userId => {
   let shouldUpdate = false;
   const clear = () => {
@@ -193,9 +205,15 @@ const deleteTask = async taskId => {
   }
 };
 
+/**
+ * Removes tasks by board id (when board was deleted)
+ * @exports
+ * @async
+ * @param {string} boardId - the board id
+ */
 const deleteTasksByBoardId = async boardId => {
   const tasks = (await getAll()).filter(
-    ({ boardId: taskBoardId }) => taskBoardId !== boardId
+    task => task.boardId !== boardId
   );
   try {
     await saveTasks(tasks);
