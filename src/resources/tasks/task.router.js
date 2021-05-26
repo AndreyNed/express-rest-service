@@ -4,8 +4,7 @@ const taskMiddleware = require('./task.middleware');
 const taskService = require('./task.service');
 const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
 
-// res.locals should contain board already
-
+/** Returns all tasks for board */
 router.route('/').get(async (req, res) => {
   try {
     const tasks = await taskService.getByBoardId(res.locals.board.id);
@@ -16,6 +15,7 @@ router.route('/').get(async (req, res) => {
   }
 });
 
+/** Creates and returns task for board */
 router.route('/').post(async (req, res) => {
   try {
     if (!req.body.boardId) req.body.boardId = res.locals.board.id;
@@ -27,12 +27,15 @@ router.route('/').post(async (req, res) => {
   }
 });
 
+/** Sets task to res.locals.task by params.taskId */
 router.use('/:taskId', taskMiddleware.getTask);
 
+/** Returns task by id for given board */
 router.route('/:taskId').get(async (req, res) => {
   res.status(200).json(res.locals.task);
 });
 
+/** Updates and returns task for board */
 router.route('/:taskId').put(async (req, res) => {
   try {
     const task = await taskService.update(
@@ -46,6 +49,7 @@ router.route('/:taskId').put(async (req, res) => {
   }
 });
 
+/** Removes task for board */
 router.route('/:taskId').delete(async (req, res) => {
   try {
     await taskService.deleteTask(res.locals.task.id);
