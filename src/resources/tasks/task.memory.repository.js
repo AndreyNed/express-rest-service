@@ -1,6 +1,5 @@
 const path = require('path');
 
-const Task = require('./task.model');
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
@@ -29,13 +28,17 @@ const getAll = async () => {
   }
 };
 
-const getByBoardId = async boardId => (
-  (await getAll()).filter(({ boardId: taskBoardId }) => taskBoardId === boardId)
-);
+const getByBoardId = async boardId => {
+  const tasks = await getAll();
+
+  return tasks.filter(task => task.boardId === boardId)
+};
 
 const getTask = async (taskId, boardId) => {
   const tasks = await getByBoardId(boardId);
-  const task = tasks.find(({ id }) => id === taskId);
+
+  const task = tasks.find(item => item.id === taskId);
+
   if (!task) {
     throw Object.create({ status: 404, message: 'Task not found' });
   }
@@ -43,57 +46,26 @@ const getTask = async (taskId, boardId) => {
   return task;
 };
 
-const create = async ({
-  title,
-  order,
-  description,
-  userId,
-  boardId,
-  columnId,
-}) => {
-  const tasks = await getAll();
-  const newTask = new Task({
-    title,
-    order,
-    description,
-    userId,
-    boardId,
-    columnId,
-  });
-  tasks.push(newTask);
+const create = async newTask => {
   try {
+    const tasks = await getAll();
+    tasks.push(newTask);
     await saveTasks(tasks);
 
-    return newTask;
+    return true;
   } catch (e) {
     return throwTaskRepositoryError(e, 'task was not created');
   }
 };
 
-const update = async (task, {
-  title,
-  order,
-  description,
-  userId,
-  boardId,
-  columnId,
-}) => {
-  const updated = new Task({
-    ...task,
-    ...(title && { title }),
-    ...(order && { order }),
-    ...(description && { description }),
-    ...(userId !== undefined && { userId }),
-    ...(boardId !== undefined && { boardId }),
-    ...(columnId !== undefined && { columnId }),
-  });
+const update = async updatedTask => {
   try {
     const tasks = (await getAll()).map(cur => (
-      cur.id === task.id ? updated : cur
+      cur.id === updatedTask.id ? updatedTask : cur
     ));
     await saveTasks(tasks);
 
-    return updated;
+    return true;
   } catch (e) {
     return throwTaskRepositoryError(e, 'task was not updated');
   }
@@ -146,9 +118,9 @@ const clearTaskUserId = async userId => {
 };
 
 const deleteTask = async taskId => {
-  let tasks = await getAll();
   try {
-    tasks = tasks.filter(({ id }) => id !== taskId);
+    let tasks = await getAll();
+    tasks = tasks.filter(task => task.id !== taskId);
     await saveTasks(tasks);
 
     return true;
@@ -159,7 +131,7 @@ const deleteTask = async taskId => {
 
 const deleteTasksByBoardId = async boardId => {
   const tasks = (await getAll()).filter(
-    ({ boardId: taskBoardId }) => taskBoardId !== boardId
+    task => task.boardId !== boardId
   );
   try {
     await saveTasks(tasks);
