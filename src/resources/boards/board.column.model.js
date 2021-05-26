@@ -11,7 +11,7 @@ class Column {
   /**
    * Creates Column instance
    * @constructor
-   * @param {string} [id[ - The column id
+   * @param {string} [id] - The column id
    * @param {string} title - The column title
    * @param {number} [order] - The column order
    */
