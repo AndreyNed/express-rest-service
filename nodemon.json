@@ -1,3 +1,18 @@
 {
-  "ignore": ["./src/data/*.*"]
+  "restartable": "rs",
+  "ignore": [
+    ".git",
+    "node_modules/",
+    "./src/data/*.*",
+    "./dist"
+  ],
+  "watch": ["src/**/*"],
+  "execMap": {
+    "ts": "node -r ts-node/register"
+  },
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "exec": "npm run ts-start",
+  "ext": "js, json, ts"
 }
