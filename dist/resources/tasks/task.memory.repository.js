@@ -4,7 +4,7 @@ const path = require('path');
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
-const { RepositoryError } = require('../../types/errors');
+const { RepositoryError, NotFoundError } = require('../../types/errors');
 /**
  * Represents task memory repository error
  * @class
@@ -33,7 +33,7 @@ const saveTasks = createSaveDataToFile(fileName);
  * @throws {TaskMemoryRepositoryError}
  */
 const throwTaskRepositoryError = (e, message) => {
-    process.stderr.write(e);
+    process.stderr.write(e.toString());
     throw new TaskMemoryRepositoryError(message);
 };
 /**
@@ -59,7 +59,7 @@ const getAll = async () => {
  */
 const getByBoardId = async (boardId) => {
     const tasks = await getAll();
-    return tasks.filter(task => task.boardId === boardId);
+    return tasks.filter((task) => task.boardId === boardId);
 };
 /**
  * Returns task by id and board id
@@ -72,9 +72,9 @@ const getByBoardId = async (boardId) => {
 const getTask = async (taskId, boardId) => {
     /** @type {Task[]} */
     const tasks = await getByBoardId(boardId);
-    const task = tasks.find(item => item.id === taskId);
+    const task = tasks.find((item) => item.id === taskId);
     if (!task) {
-        throw Object.create({ status: 404, message: 'Task not found' });
+        throw new NotFoundError('Task not found');
     }
     return task;
 };
@@ -107,7 +107,7 @@ const create = async (newTask) => {
  */
 const update = async (updatedTask) => {
     try {
-        const tasks = (await getAll()).map(cur => (cur.id === updatedTask.id ? updatedTask : cur));
+        const tasks = (await getAll()).map((cur) => (cur.id === updatedTask.id ? updatedTask : cur));
         await saveTasks(tasks);
         return true;
     }
@@ -125,10 +125,10 @@ const clearColumnIdByBoard = async (board) => {
     const { id: boardId, columns } = board;
     const idList = columns.map(({ id: columnId }) => columnId);
     let shouldUpdate = false;
-    const tasks = (await getAll()).map(task => {
+    const tasks = (await getAll()).map((task) => {
         const { boardId: taskBoardId } = task;
         let { columnId } = task;
-        if (taskBoardId === boardId && !idList.includes(columnId)) {
+        if (taskBoardId === boardId && !(columnId && idList.includes(columnId))) {
             columnId = null;
             shouldUpdate = true;
         }
@@ -158,7 +158,7 @@ const clearTaskUserId = async (userId) => {
         shouldUpdate = true;
         return null;
     };
-    const tasks = (await getAll()).map(task => ({
+    const tasks = (await getAll()).map((task) => ({
         ...task,
         userId: task.userId === userId ? clear() : task.userId,
     }));
@@ -182,7 +182,7 @@ const clearTaskUserId = async (userId) => {
 const deleteTask = async (taskId) => {
     try {
         let tasks = await getAll();
-        tasks = tasks.filter(task => task.id !== taskId);
+        tasks = tasks.filter((task) => task.id !== taskId);
         await saveTasks(tasks);
         return true;
     }
@@ -197,7 +197,7 @@ const deleteTask = async (taskId) => {
  * @param {string} boardId - the board id
  */
 const deleteTasksByBoardId = async (boardId) => {
-    const tasks = (await getAll()).filter(task => task.boardId !== boardId);
+    const tasks = (await getAll()).filter((task) => task.boardId !== boardId);
     try {
         await saveTasks(tasks);
     }

@@ -8,7 +8,7 @@ const Task = require('./task.model');
  * @param {string} boardId - The board id
  * @returns {Promise<Task[]|[]|void>} - list of tasks for board
  */
-const getByBoardId = boardId => taskRepo.getByBoardId(boardId);
+const getByBoardId = (boardId) => taskRepo.getByBoardId(boardId);
 /**
  * Creates and returns new task
  * @exports
@@ -73,5 +73,5 @@ const update = async (task, { title, order, description, userId, boardId, column
  * @param {string} taskId - the task id
  * @return {Promise<boolean>} - the flag of success
  */
-const deleteTask = taskId => taskRepo.deleteTask(taskId);
+const deleteTask = (taskId) => taskRepo.deleteTask(taskId);
 module.exports = { getByBoardId, create, getTask, update, deleteTask };

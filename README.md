@@ -20,7 +20,18 @@ npm install
 ## Running application
 
 ```
-npm start
+npm run build-and-start
+```
+
+## Building javascript
+
+```
+npm run ts-build
+```
+
+## Running typescript application
+```
+npm run ts-dev
 ```
 
 After starting the app on port (4000 as default) you can open

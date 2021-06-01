@@ -6,6 +6,12 @@ class RepositoryError {
         this.message = message;
     }
 }
+class NotFoundError extends RepositoryError {
+    constructor(message = 'Resource is not found') {
+        super(404, message);
+    }
+}
 module.exports = {
     RepositoryError,
+    NotFoundError,
 };

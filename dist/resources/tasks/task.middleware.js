@@ -6,9 +6,9 @@ const defaultHttpErrorHandler = require('../../utils/default.http.error.handler'
  * Finds task by params.taskId and sets to res.locals.task
  * @exports
  * @async
- * @param {import('express').Request} req - The request
- * @param {import('express').Response} res - The response
- * @param {import('express').NextFunction} next - The next function
+ * @param {express.Request} req - The request
+ * @param {express.Response} res - The response
+ * @param {express.NextFunction} next - The next function
  */
 const getTask = async (req, res, next) => {
     const { id: boardId } = res.locals.board || {};

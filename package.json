@@ -16,6 +16,7 @@
     "ts-dev": "nodemon",
     "ts-start": "ts-node src/server.ts",
     "ts-build": "tsc",
+    "build-and-start": "tsc & node dist/server.js",
     "start": "nodemon --config nodemon-js.json dist/server.js",
     "dev": "nodemon --config nodemon.json dist/server.js",
     "dev:debug": "nodemon --config nodemon-js.json --inspect-brk dist/server.js",

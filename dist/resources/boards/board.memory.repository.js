@@ -4,7 +4,7 @@ const path = require('path');
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
-const { RepositoryError } = require('../../types/errors');
+const { RepositoryError, NotFoundError } = require('../../types/errors');
 /**
  * Represents board repository error
  * @class
@@ -33,7 +33,7 @@ const saveBoards = createSaveDataToFile(fileName);
  * @throws {BoardMemoryRepositoryError}
  */
 const throwBoardRepositoryError = (e, message) => {
-    process.stderr.write(e);
+    process.stderr.write(e.toString());
     throw new BoardMemoryRepositoryError(message);
 };
 /**
@@ -63,7 +63,7 @@ const getBoard = async (boardId) => {
     const boards = await getAll();
     const board = boards.find(({ id }) => id === boardId);
     if (!board) {
-        throw Object.create({ status: 404, message: 'Board not found' });
+        throw new NotFoundError('Board not found');
     }
     return board;
 };
@@ -96,7 +96,7 @@ const create = async (newBoard) => {
  */
 const update = async (updatedBoard) => {
     try {
-        const boards = (await getAll()).map(cur => (cur.id === updatedBoard.id ? updatedBoard : cur));
+        const boards = (await getAll()).map((cur) => (cur.id === updatedBoard.id ? updatedBoard : cur));
         await saveBoards(boards);
         return true;
     }

@@ -14,12 +14,12 @@ const getAll = () => boardRepo.getAll();
  * @param {string} boardId - The board id
  * @return {Promise<Board|null>}
  */
-const getBoard = boardId => boardRepo.getBoard(boardId);
+const getBoard = (boardId) => boardRepo.getBoard(boardId);
 /**
  * Creates new board
  * @exports
  * @param {string} title - The board title
- * @param {import('./board.column.model')[]} columns - The board columns
+ * @param {IBoardColumn[]} columns - The board columns
  * @returns {Board} - new board
  */
 const create = async ({ title, columns }) => {
@@ -34,7 +34,7 @@ const create = async ({ title, columns }) => {
  * @async
  * @param {Board} board - The current board
  * @param {string} title - The new title
- * @param {import('./board.column.model')[]} columns - The new columns
+ * @param {IBoardColumn[]} columns - The new columns
  */
 const update = async (board, { title, columns }) => {
     const updatedBoard = new Board({

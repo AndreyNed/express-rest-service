@@ -4,7 +4,7 @@ const path = require('path');
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
-const { RepositoryError } = require('../../types/errors');
+const { RepositoryError, NotFoundError } = require('../../types/errors');
 /**
  * Represents class UserMemoryRepositoryError
  */
@@ -76,7 +76,7 @@ const getUser = async (userId) => {
     const users = await getAll();
     const user = users.find(({ id }) => id === userId);
     if (!user) {
-        throw Object.create({ status: 404, message: 'User not found' });
+        throw new NotFoundError('User not found');
     }
     return user;
 };
@@ -109,7 +109,7 @@ const create = async (newUser) => {
  */
 const update = async (updatedUser) => {
     try {
-        const users = (await getAll()).map(cur => (cur.id === updatedUser.id ? updatedUser : cur));
+        const users = (await getAll()).map((cur) => (cur.id === updatedUser.id ? updatedUser : cur));
         await saveUsers(users);
         return true;
     }

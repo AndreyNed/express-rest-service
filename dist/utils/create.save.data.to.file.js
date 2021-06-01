@@ -6,7 +6,7 @@ const fs = require('fs');
  * @param {string} filename - The file name
  * @returns {function} - Async function
  */
-const createSaveDataToFile = filename => (
+const createSaveDataToFile = (filename) => (
 /**
  * Writes data to file with given file name
  * @async

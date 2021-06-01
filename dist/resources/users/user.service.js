@@ -6,7 +6,7 @@ const taskRepo = require('../tasks/task.memory.repository');
 /**
  * Gets all users
  * @exports
- * @returns {User[]} - array of users
+ * @returns {Promise<User[]>} - array of users
  */
 const getAll = () => usersRepo.getAll();
 /**
@@ -45,7 +45,7 @@ const update = async (user, { name, login, password }) => {
  * @param {string} userId - the user's id
  * @returns Promise<User>
  */
-const getUser = userId => usersRepo.getUser(userId);
+const getUser = (userId) => usersRepo.getUser(userId);
 /**
  * Removes user by id
  * @param {string} userId - the user's id
