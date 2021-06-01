@@ -46,7 +46,7 @@ const saveUsers = createSaveDataToFile(fileName);
  * @throws UserMemoryRepositoryError
  */
 const throwUserRepositoryError = (e, message) => {
-    process.stderr.write(e);
+    process.stderr.write(e.toString());
     throw new UserMemoryRepositoryError(message);
 };
 /**
