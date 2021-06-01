@@ -1,5 +1,6 @@
-const { RepositoryError } = require('../types/errors');
 import express = require('express');
+
+const { RepositoryError } = require('../types/errors');
 
 /**
  * Http error object

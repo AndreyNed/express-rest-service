@@ -11,17 +11,17 @@ const { RepositoryError } = require('../types/errors')
 const createGetDataFromFile = (
   fileName:string,
   RepoError:typeof RepositoryError,
-  isArray:boolean = true,
-):Function => (
+  isArray = true,
+) => (
   /**
    * Reads data from file with given file name
    * @async
    * @returns {Promise} - Promise which resolves to data from file or
    * rejected to repository error object
    */
-  async ():Promise<Object|Array<Object>|[]> => {
+  async ():Promise<Record<string, unknown>|Array<Record<string, unknown>>|[]> => {
     const jsonData:string = fs.readFileSync(fileName, 'utf-8');
-    const data:object = JSON.parse(jsonData);
+    const data:Record<string, unknown> = JSON.parse(jsonData);
     if (isArray && !Array.isArray(data)) {
       throw new RepoError('data should be an array');
     }

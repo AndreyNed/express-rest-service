@@ -1,11 +1,11 @@
 import express = require('express');
+import ITask from '../../types/task';
+
 const router = require('express').Router();
 
 const taskMiddleware = require('./task.middleware');
 const taskService = require('./task.service');
 const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
-
-import ITask from '../../types/task';
 
 /** Returns all tasks for board */
 router.route('/')

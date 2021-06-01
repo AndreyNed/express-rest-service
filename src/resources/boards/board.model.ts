@@ -1,8 +1,8 @@
+import IBoard from '../../types/board';
+
 const { v4: uuidV4 } = require('uuid');
 
 const Column = require('./board.column.model');
-
-import IBoard from '../../types/board';
 
 /**
  * Represents board data
@@ -11,7 +11,9 @@ import IBoard from '../../types/board';
  */
 class Board implements IBoard {
   id: string;
+
   title: string;
+
   columns: typeof Column[]|[];
   
   /**

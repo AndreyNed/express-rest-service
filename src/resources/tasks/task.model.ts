@@ -1,6 +1,6 @@
-const { v4: uuidV4 } = require('uuid');
-
 import ITask from '../../types/task';
+
+const { v4: uuidV4 } = require('uuid');
 
 /**
  * Represents task
@@ -9,11 +9,17 @@ import ITask from '../../types/task';
  */
 class Task implements ITask {
   id: string;
+
   title: string;
+  
   order: number;
+  
   description: string;
+  
   userId: string|null;
+
   boardId: string|null;
+
   columnId: string|null;
   
   /**

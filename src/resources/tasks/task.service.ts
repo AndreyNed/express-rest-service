@@ -1,7 +1,7 @@
+import ITask from '../../types/task';
+
 const taskRepo = require('./task.memory.repository');
 const Task = require('./task.model');
-
-import ITask from '../../types/task';
 
 /**
  * Gets tasks by board id

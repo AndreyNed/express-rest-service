@@ -1,4 +1,5 @@
 import express = require('express');
+
 const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
 const boardService = require('./board.service');
 

@@ -1,7 +1,8 @@
+import IUser from '../../types/user';
+
 const usersRepo = require('./user.memory.repository');
 const User = require('./user.model');
 const taskRepo = require('../tasks/task.memory.repository');
-import IUser from '../../types/user';
 
 /**
  * Gets all users

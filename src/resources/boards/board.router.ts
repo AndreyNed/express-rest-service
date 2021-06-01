@@ -1,5 +1,7 @@
 import express = require('express');
+
 import IBoard from '../../types/board';
+
 const router = require('express').Router();
 
 const boardService = require('./board.service');

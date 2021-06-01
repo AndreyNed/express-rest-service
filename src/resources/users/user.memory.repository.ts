@@ -1,10 +1,11 @@
+import IUser from '../../types/user';
+
 const path = require('path');
 
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
 const { RepositoryError, NotFoundError } = require('../../types/errors');
-import IUser from '../../types/user';
 
 /**
  * Represents class UserMemoryRepositoryError

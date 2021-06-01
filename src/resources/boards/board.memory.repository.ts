@@ -1,11 +1,11 @@
+import IBoard from '../../types/board';
+
 const path = require('path');
 
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
 const { RepositoryError, NotFoundError } = require('../../types/errors');
-
-import IBoard from '../../types/board';
 
 /**
  * Represents board repository error
@@ -28,8 +28,8 @@ class BoardMemoryRepositoryError extends RepositoryError {
 }
 
 const fileName:string = path.resolve(DATA_PATH, 'boards.json');
-const readBoards:Function = createGetDataFromFile(fileName, BoardMemoryRepositoryError);
-const saveBoards:Function = createSaveDataToFile(fileName);
+const readBoards = createGetDataFromFile(fileName, BoardMemoryRepositoryError);
+const saveBoards = createSaveDataToFile(fileName);
 
 /**
  * Throws board repository error with log

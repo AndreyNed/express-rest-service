@@ -5,14 +5,14 @@ const fs = require('fs');
  * @param {string} filename - The file name
  * @returns {function} - Async function
  */
-const createSaveDataToFile = (filename:string):Function => (
+const createSaveDataToFile = (filename:string) => (
   /**
    * Writes data to file with given file name
    * @async
    * @param {Object} data - The payload with data object
    * @returns {void}
    */
-  async (data:Object|Array<Object>|[]):Promise<void> => {
+  async (data:Record<string, unknown>|Array<Record<string, unknown>>|[]):Promise<void> => {
     const jsonData:string = JSON.stringify(data);
 
     await fs.writeFileSync(filename, jsonData, 'utf-8');

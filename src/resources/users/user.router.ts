@@ -1,11 +1,13 @@
-const router = require('express').Router();
 import express  = require('express');
+
+import IUser from '../../types/user';
+
+const router = require('express').Router();
 
 const User = require('./user.model');
 const usersService = require('./user.service');
 const userMiddleware = require('./user.middleware');
 const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
-import IUser from '../../types/user';
 
 /** Returns all users without passwords */
 router.route('/')

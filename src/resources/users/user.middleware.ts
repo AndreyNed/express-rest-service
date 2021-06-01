@@ -1,6 +1,7 @@
+import express = require('express');
+
 const userService = require('./user.service');
 const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
-import express = require('express');
 
 /**
  * Middleware - gets user by `req.params.id` and sets to `req`

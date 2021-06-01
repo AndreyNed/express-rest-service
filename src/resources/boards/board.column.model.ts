@@ -1,6 +1,6 @@
-const { v4: uuidV4 } = require('uuid');
-
 import IBoardColumn from '../../types/board-column';
+
+const { v4: uuidV4 } = require('uuid');
 
 /**
  * Represents Column class - for boards column data
@@ -9,7 +9,9 @@ import IBoardColumn from '../../types/board-column';
  */
 class Column implements IBoardColumn {
   id?: string;
+
   title: string;
+
   order?: number;
   
   /**

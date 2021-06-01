@@ -1,6 +1,6 @@
-const { v4: uuidV4 } = require('uuid');
-
 import IUser from '../../types/user';
+
+const { v4: uuidV4 } = require('uuid');
 
 /**
  * Represents type User
@@ -17,8 +17,11 @@ import IUser from '../../types/user';
  */
 class User implements IUser {
   id: string;
+
   name: string;
+
   login: string;
+
   password: string;
   
   /**

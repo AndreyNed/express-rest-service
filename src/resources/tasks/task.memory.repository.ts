@@ -1,13 +1,14 @@
+import ITask from '../../types/task';
+
+import IBoard from '../../types/board';
+import IBoardColumn from '../../types/board-column';
+
 const path = require('path');
 
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
 const { RepositoryError, NotFoundError } = require('../../types/errors');
-
-import ITask from '../../types/task';
-import IBoard from '../../types/board';
-import IBoardColumn from '../../types/board-column';
 
 /**
  * Represents task memory repository error
@@ -142,7 +143,7 @@ const update = async (updatedTask:ITask):Promise<boolean> => {
 const clearColumnIdByBoard = async (board:IBoard):Promise<void> => {
   const { id: boardId, columns } = board;
   const idList = columns.map(({ id: columnId }:IBoardColumn):string|undefined => columnId);
-  let shouldUpdate:boolean = false;
+  let shouldUpdate = false;
   const tasks:ITask[] = (await getAll()).map((task:ITask):ITask => {
     const { boardId: taskBoardId } = task;
     let { columnId } = task;
@@ -173,7 +174,7 @@ const clearColumnIdByBoard = async (board:IBoard):Promise<void> => {
  * @param {string} userId - the user id
  */
 const clearTaskUserId = async (userId:string):Promise<void> => {
-  let shouldUpdate:boolean = false;
+  let shouldUpdate = false;
   const clear = ():null => {
     shouldUpdate = true;
     return null;

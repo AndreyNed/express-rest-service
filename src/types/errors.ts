@@ -1,5 +1,6 @@
 class RepositoryError {
   status: number;
+
   message: string;
   
   constructor(status = 500, message = 'Server error') {
@@ -9,7 +10,7 @@ class RepositoryError {
 }
 
 class NotFoundError extends RepositoryError {
-  constructor(message:string = 'Resource is not found') {
+  constructor(message = 'Resource is not found') {
     super(404, message);
   }
 }
