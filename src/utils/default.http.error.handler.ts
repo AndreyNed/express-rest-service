@@ -1,6 +1,6 @@
-import express = require('express');
+import * as express from 'express';
 
-const { RepositoryError } = require('../types/errors');
+import { IRepositoryError } from '../types/errors/repository-error';
 
 /**
  * Http error object
@@ -15,12 +15,13 @@ const { RepositoryError } = require('../types/errors');
  * @param {express.Response} res - The http response object
  * @returns {void}
  */
-const defaultHttpErrorHandler = (e:typeof RepositoryError, res:express.Response) => {
+const defaultHttpErrorHandler = (
+  e: IRepositoryError,
+  res: express.Response
+): void => {
   const { status = 500, message = 'Server error' } = e || {};
 
   res.status(status).send(message);
 };
 
-module.exports = defaultHttpErrorHandler;
-
-export {};
+export default defaultHttpErrorHandler;

@@ -1,10 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const path = require('path');
-const { DATA_PATH } = require('../../common/config');
+import * as path from 'path';
+import config from '../../common/config';
+import { RepositoryError, NotFoundError } from '../../types/errors';
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
-const { RepositoryError, NotFoundError } = require('../../types/errors');
+const { DATA_PATH } = config;
 /**
  * Represents board repository error
  * @class
@@ -122,4 +121,4 @@ const deleteBoard = async (boardId) => {
         return throwBoardRepositoryError(e, 'board was not deleted');
     }
 };
-module.exports = { getAll, getBoard, create, update, deleteBoard };
+export default { getAll, getBoard, create, update, deleteBoard };

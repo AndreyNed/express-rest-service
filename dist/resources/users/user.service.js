@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const usersRepo = require('./user.memory.repository');
 const User = require('./user.model');
 const taskRepo = require('../tasks/task.memory.repository');
@@ -56,4 +54,4 @@ const deleteUser = async (userId) => {
     await taskRepo.clearTaskUserId(userId);
     return true;
 };
-module.exports = { getAll, create, update, getUser, deleteUser };
+export default { getAll, create, update, getUser, deleteUser };

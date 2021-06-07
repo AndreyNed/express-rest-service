@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
-const boardService = require('./board.service');
+import defaultHttpErrorHandler from '../../utils/default.http.error.handler';
+import boardService from './board.service';
 /**
  * Finds board by params.id and sets to res.locals.board
  * @exports
@@ -20,4 +18,4 @@ const getBoard = async (req, res, next) => {
         defaultHttpErrorHandler(e, res);
     }
 };
-module.exports = { getBoard };
+export { getBoard };

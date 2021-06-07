@@ -1,9 +1,9 @@
 import IBoardColumn from './board-column';
 
 interface IBoard {
-  id?: string;
+  id: string;
   title: string;
-  columns: IBoardColumn[]|[];
+  columns: IBoardColumn[] | [];
 }
 
 export default IBoard;

@@ -1,8 +1,8 @@
+import { v4 as uuidV4 } from 'uuid';
+
 import IBoard from '../../types/board';
-
-const { v4: uuidV4 } = require('uuid');
-
-const Column = require('./board.column.model');
+import IBoardColumn from '../../types/board-column';
+import Column from './board.column.model';
 
 /**
  * Represents board data
@@ -14,33 +14,26 @@ class Board implements IBoard {
 
   title: string;
 
-  columns: typeof Column[]|[];
-  
+  columns: IBoardColumn[] | [];
+
   /**
    * Creates board object
    * @constructor
-   * @param {string} id - The board id
-   * @param {string} title - The board title
-   * @param {Column[]|[]} columns - The board columns
+   * @param {Partial<IBoard>} props - New board props
    */
-  constructor({
-    id = uuidV4(),
-    title = 'Board',
-    columns = [],
-  } = {}) {
+  constructor(props: Partial<IBoard> = {}) {
     /** @member {string} */
-    this.id = id;
+    this.id = props.id || uuidV4();
 
     /** @member {string} */
-    this.title = title;
+    this.title = props.title || 'Board';
 
-    /** @member {Column[]|[]} */
-    this.columns = columns.map(({ id: columnId, title: columnTitle, order }) => (
-      new Column({ id: columnId, title: columnTitle, order })
-    ));
+    /** @member {IBoardColumn[]|[]} */
+    this.columns = (props.columns || []).map(
+      (column: IBoardColumn) =>
+        new Column({ id: column.id, title: column.title, order: column.order })
+    );
   }
 }
 
-module.exports = Board;
-
-export {};
+export default Board;

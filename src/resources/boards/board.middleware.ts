@@ -1,7 +1,7 @@
-import express = require('express');
+import * as express from 'express';
 
-const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
-const boardService = require('./board.service');
+import defaultHttpErrorHandler from '../../utils/default.http.error.handler';
+import boardService from './board.service';
 
 /**
  * Finds board by params.id and sets to res.locals.board
@@ -11,7 +11,11 @@ const boardService = require('./board.service');
  * @param {express.Response} res - The response
  * @param {express.NextFunction} next - The next function
  */
-const getBoard = async (req:express.Request, res:express.Response, next:express.NextFunction):Promise<void> => {
+const getBoard = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+): Promise<void> => {
   const { boardId } = req.params;
   try {
     res.locals.board = await boardService.getBoard(boardId);
@@ -21,6 +25,4 @@ const getBoard = async (req:express.Request, res:express.Response, next:express.
   }
 };
 
-module.exports = { getBoard };
-
-export {};
+export default getBoard;

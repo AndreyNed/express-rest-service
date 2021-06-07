@@ -1,7 +1,6 @@
 import ITask from '../../types/task';
-
-const taskRepo = require('./task.memory.repository');
-const Task = require('./task.model');
+import taskRepo from './task.memory.repository';
+import Task from './task.model';
 
 /**
  * Gets tasks by board id
@@ -9,36 +8,18 @@ const Task = require('./task.model');
  * @param {string} boardId - The board id
  * @returns {Promise<Task[]|[]|void>} - list of tasks for board
  */
-const getByBoardId = (boardId:string):Promise<ITask[]> => taskRepo.getByBoardId(boardId);
+const getByBoardId = (boardId: string): Promise<ITask[]> =>
+  taskRepo.getByBoardId(boardId);
 
 /**
  * Creates and returns new task
  * @exports
  * @async
- * @param {string} title - The task title
- * @param {number} order - The task order
- * @param {string} description - The task description
- * @param {string} userId - The task userId
- * @param {string} boardId - The task boardId
- * @param {string} columnId - The task columnId
+ * @param {ITask} data - The task title
  * @returns {Promise<Task>} - created task
  */
-const create = async ({
-  title,
-  order,
-  description,
-  userId,
-  boardId,
-  columnId,
-}:ITask):Promise<ITask> => {
-  const newTask:ITask = new Task({
-    title,
-    order,
-    description,
-    userId,
-    boardId,
-    columnId,
-  });
+const create = async (data: Partial<ITask>): Promise<ITask> => {
+  const newTask: ITask = new Task(data);
   await taskRepo.create(newTask);
 
   return newTask;
@@ -51,7 +32,8 @@ const create = async ({
  * @param {string} boardId - The board id
  * @returns {Promise<Task>} - task
  */
-const getTask = (taskId:string, boardId:string):Promise<ITask> => taskRepo.getTask(taskId, boardId);
+const getTask = (taskId: string, boardId: string): Promise<ITask> =>
+  taskRepo.getTask(taskId, boardId);
 
 /**
  * Updates task with provided data
@@ -66,15 +48,11 @@ const getTask = (taskId:string, boardId:string):Promise<ITask> => taskRepo.getTa
  * @param {string} columnId - the task columnId
  * @returns {Promise<Task>} - updated task
  */
-const update = async (task:ITask, {
-  title,
-  order,
-  description,
-  userId,
-  boardId,
-  columnId,
-}:ITask):Promise<ITask> => {
-  const updatedTask:ITask = new Task({
+const update = async (
+  task: ITask,
+  { title, order, description, userId, boardId, columnId }: ITask
+): Promise<ITask> => {
+  const updatedTask: ITask = new Task({
     ...task,
     ...(title && { title }),
     ...(order && { order }),
@@ -95,8 +73,7 @@ const update = async (task:ITask, {
  * @param {string} taskId - the task id
  * @return {Promise<boolean>} - the flag of success
  */
-const deleteTask = (taskId:string):Promise<boolean> => taskRepo.deleteTask(taskId);
+const deleteTask = (taskId: string): Promise<boolean> =>
+  taskRepo.deleteTask(taskId);
 
-module.exports = { getByBoardId, create, getTask, update, deleteTask };
-
-export {};
+export default { getByBoardId, create, getTask, update, deleteTask };

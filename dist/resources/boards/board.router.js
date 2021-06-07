@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const router = require('express').Router();
 const boardService = require('./board.service');
 const boardMiddleware = require('./board.middleware');
@@ -51,3 +49,4 @@ router.route('/:boardId').delete(async (req, res) => {
     }
 });
 module.exports = router;
+export default router;

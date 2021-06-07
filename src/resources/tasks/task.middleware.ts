@@ -1,7 +1,7 @@
-import express = require('express');
+import * as express from 'express';
 
-const taskService = require('./task.service');
-const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
+import taskService from './task.service';
+import defaultHttpErrorHandler from '../../utils/default.http.error.handler';
 
 /**
  * Finds task by params.taskId and sets to res.locals.task
@@ -12,10 +12,10 @@ const defaultHttpErrorHandler = require('../../utils/default.http.error.handler'
  * @param {express.NextFunction} next - The next function
  */
 const getTask = async (
-  req:express.Request,
-  res:express.Response,
-  next:express.NextFunction,
-):Promise<void> => {
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+): Promise<void> => {
   const { id: boardId } = res.locals.board || {};
   const { taskId } = req.params;
   try {
@@ -27,6 +27,4 @@ const getTask = async (
   }
 };
 
-module.exports = { getTask };
-
-export {};
+export default getTask;

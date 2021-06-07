@@ -1,6 +1,7 @@
-const path = require('path');
+import * as path from 'path';
 
-const getFullFileName = (fileName:string) => path.resolve(__dirname, '..', 'data', fileName);
+const getFullFileName = (fileName: string) =>
+  path.resolve(__dirname, '..', 'data', fileName);
 
 const ENTITIES = {
   USERS: {
@@ -19,4 +20,4 @@ const ENTITIES = {
 
 module.exports = ENTITIES;
 
-export {}
+export {};

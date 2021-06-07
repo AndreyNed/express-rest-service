@@ -23,22 +23,22 @@
   "extends": [
     "eslint:recommended",
     "plugin:node/recommended",
+    "plugin:import/recommended",
     "airbnb-base",
-    "prettier",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "plugin:prettier/recommended"
   ],
   "rules": {
     "import/extensions": "off",
     "linebreak-style": "off",
     "node/no-unsupported-features/es-syntax": "off",
     "no-underscore-dangle": "off",
-    "import/prefer-default-export": "off",
-    "@typescript-eslint/no-var-requires": "off",
-    "import/no-unresolved": "off",
-    "node/no-missing-require": "off",
-    "node/no-missing-import": "off",
-    "import/first": "off",
-    "max-classes-per-file": "off"
+    "node/no-missing-import": ["error", {
+      "allowModules": [],
+      "resolvePaths": ["./src"],
+      "tryExtensions": [".js", ".json", ".ts"]
+    }]
   }
 }

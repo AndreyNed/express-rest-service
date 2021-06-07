@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const { v4: uuidV4 } = require('uuid');
 /**
  * Represents Column class - for boards column data
@@ -24,3 +22,4 @@ class Column {
     }
 }
 module.exports = Column;
+export {};

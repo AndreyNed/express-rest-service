@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const fs = require('fs');
-const { RepositoryError } = require('../types/errors');
+import * as fs from 'fs';
 /**
  * Creates async function which reads from file with given file name
  * @param {string} fileName - The file name
@@ -24,4 +21,4 @@ async () => {
     }
     return data;
 });
-module.exports = createGetDataFromFile;
+export default createGetDataFromFile;

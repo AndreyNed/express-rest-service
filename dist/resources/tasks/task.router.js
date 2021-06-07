@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const router = require('express').Router();
 const taskMiddleware = require('./task.middleware');
 const taskService = require('./task.service');
@@ -58,3 +56,4 @@ router.route('/:taskId')
     }
 });
 module.exports = router;
+export default router;

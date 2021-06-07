@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const { RepositoryError } = require('../types/errors');
+const { RepositoryError } = require('../types/errors/errors');
 /**
  * Http error object
  * @typedef {Object} HttpError - Represents type HttpError
@@ -17,4 +15,4 @@ const defaultHttpErrorHandler = (e, res) => {
     const { status = 500, message = 'Server error' } = e || {};
     res.status(status).send(message);
 };
-module.exports = defaultHttpErrorHandler;
+export default defaultHttpErrorHandler;

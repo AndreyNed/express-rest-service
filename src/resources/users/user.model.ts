@@ -1,6 +1,6 @@
-import IUser from '../../types/user';
+import { v4 as uuidV4 } from 'uuid';
 
-const { v4: uuidV4 } = require('uuid');
+import IUser from '../../types/user';
 
 /**
  * Represents type User
@@ -23,32 +23,24 @@ class User implements IUser {
   login: string;
 
   password: string;
-  
+
   /**
    * Creates user
    * @constructor
-   * @param {string} id - The user id
-   * @param {string} name - The user name
-   * @param {string} login - The user login
-   * @param {string} password - The user password
+   * @param {Partial<IUser>} props - The properties values
    */
-  constructor({
-    id = uuidV4(),
-    name = 'USER',
-    login = 'user',
-    password = 'P@55w0rd'
-  } = {}) {
+  constructor(props: Partial<IUser> = {}) {
     /** @member {string} */
-    this.id = id;
+    this.id = props.id || uuidV4();
 
     /** @member {string} */
-    this.name = name;
+    this.name = props.name || 'USER';
 
     /** @member {string} */
-    this.login = login;
+    this.login = props.login || 'user';
 
     /** @member {string} */
-    this.password = password;
+    this.password = props.password || 'P@55w0rd';
   }
 
   /**
@@ -57,12 +49,10 @@ class User implements IUser {
    * @param {User} user - The user
    * @returns {User} - User's data without a password
    */
-  static toResponse(user:User) {
+  static toResponse(user: IUser): Partial<IUser> {
     const { id, name, login } = user;
     return { id, name, login };
   }
 }
 
-module.exports = User;
-
-export {};
+export default User;

@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const path = require('path');
 const { DATA_PATH } = require('../../common/config');
 const createGetDataFromFile = require('../../utils/create.get.data.from.file');
 const createSaveDataToFile = require('../../utils/create.save.data.to.file');
-const { RepositoryError, NotFoundError } = require('../../types/errors');
+const { RepositoryError, NotFoundError } = require('../../types/errors/errors');
 /**
  * Represents task memory repository error
  * @class
@@ -205,7 +203,7 @@ const deleteTasksByBoardId = async (boardId) => {
         throwTaskRepositoryError(e, 'tasks were not deleted');
     }
 };
-module.exports = {
+export default {
     getByBoardId,
     create,
     getTask,

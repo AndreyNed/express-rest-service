@@ -1,11 +1,12 @@
+import * as path from 'path';
+
 import IUser from '../../types/user';
+import config from '../../common/config';
+import createGetDataFromFile from '../../utils/create.get.data.from.file';
+import createSaveDataToFile from '../../utils/create.save.data.to.file';
+import { RepositoryError, NotFoundError } from '../../types/errors';
 
-const path = require('path');
-
-const { DATA_PATH } = require('../../common/config');
-const createGetDataFromFile = require('../../utils/create.get.data.from.file');
-const createSaveDataToFile = require('../../utils/create.save.data.to.file');
-const { RepositoryError, NotFoundError } = require('../../types/errors');
+const { DATA_PATH } = config;
 
 /**
  * Represents class UserMemoryRepositoryError
@@ -52,7 +53,7 @@ const saveUsers = createSaveDataToFile(fileName);
  * @param {string} message - The message
  * @throws UserMemoryRepositoryError
  */
-const throwUserRepositoryError = (e:Error, message:string) => {
+const throwUserRepositoryError = (e: Error, message: string) => {
   process.stderr.write(e.toString());
   throw new UserMemoryRepositoryError(message);
 };
@@ -64,7 +65,7 @@ const throwUserRepositoryError = (e:Error, message:string) => {
  * @returns {User[]} - Array of users
  * @throws UserMemoryRepositoryError
  */
-const getAll = async () => {
+const getAll = async (): Promise<IUser[]> => {
   try {
     return await readUsers();
   } catch (e) {
@@ -80,9 +81,9 @@ const getAll = async () => {
  * @returns Promise<User> - The user
  * @throws {Object}
  */
-const getUser = async (userId:string):Promise<IUser|null> => {
-  const users:IUser[]|[] = await getAll();
-  const user:IUser|undefined = users.find(({ id }) => id === userId);
+const getUser = async (userId: string): Promise<IUser> => {
+  const users: IUser[] | [] = await getAll();
+  const user: IUser | undefined = users.find(({ id }) => id === userId);
   if (!user) {
     throw new NotFoundError('User not found');
   }
@@ -98,9 +99,9 @@ const getUser = async (userId:string):Promise<IUser|null> => {
  * @returns Promise<boolean> - The Promise resolved as success flag
  * @throws {UserMemoryRepositoryError}
  */
-const create = async (newUser:IUser):Promise<boolean|void> => {
+const create = async (newUser: IUser): Promise<boolean | void> => {
   try {
-    const users:IUser[] = await getAll();
+    const users: IUser[] = await getAll();
     users.push(newUser);
     await saveUsers(users);
 
@@ -118,18 +119,18 @@ const create = async (newUser:IUser):Promise<boolean|void> => {
  * @returns Promise<boolean> - Promise resolves to flag of success
  * @throws {UserMemoryRepositoryError}
  */
-const update = async (updatedUser:IUser):Promise<boolean|void> => {
+const update = async (updatedUser: IUser): Promise<boolean | void> => {
   try {
-    const users:IUser[] = (await getAll()).map((cur:IUser) => (
+    const users: IUser[] = (await getAll()).map((cur: IUser) =>
       cur.id === updatedUser.id ? updatedUser : cur
-    ));
+    );
     await saveUsers(users);
 
     return true;
   } catch (e) {
     return throwUserRepositoryError(e, 'user was not updated');
   }
-}
+};
 
 /**
  * Removes user by user id
@@ -139,8 +140,8 @@ const update = async (updatedUser:IUser):Promise<boolean|void> => {
  * @returns Promise<boolean> - true if user is removed successfully
  * @throws {UserMemoryRepositoryError}
  */
-const deleteUser = async (userId:string):Promise<boolean|void> => {
-  let users:IUser[] = await getAll();
+const deleteUser = async (userId: string): Promise<boolean | void> => {
+  let users: IUser[] = await getAll();
   try {
     users = users.filter(({ id }) => id !== userId);
     await saveUsers(users);
@@ -151,6 +152,4 @@ const deleteUser = async (userId:string):Promise<boolean|void> => {
   }
 };
 
-module.exports = { getAll, create, update, getUser, deleteUser };
-
-export {};
+export default { getAll, create, update, getUser, deleteUser };

@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const taskService = require('./task.service');
 const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
 /**
@@ -22,3 +20,4 @@ const getTask = async (req, res, next) => {
     }
 };
 module.exports = { getTask };
+export {};

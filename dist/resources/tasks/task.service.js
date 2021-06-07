@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const taskRepo = require('./task.memory.repository');
 const Task = require('./task.model');
 /**
@@ -75,3 +73,4 @@ const update = async (task, { title, order, description, userId, boardId, column
  */
 const deleteTask = (taskId) => taskRepo.deleteTask(taskId);
 module.exports = { getByBoardId, create, getTask, update, deleteTask };
+export {};

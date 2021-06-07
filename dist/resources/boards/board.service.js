@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const boardRepo = require('./board.memory.repository');
-const taskRepo = require('../tasks/task.memory.repository');
-const Board = require('./board.model');
+import boardRepo from './board.memory.repository';
+import taskRepo from '../tasks/task.memory.repository';
+import Board from './board.model';
 /**
  * Gets all boards
  * @exports
@@ -57,4 +55,4 @@ const deleteBoard = async (boardId) => {
     await taskRepo.deleteTasksByBoardId(boardId);
     return true;
 };
-module.exports = { getAll, getBoard, create, update, deleteBoard };
+export default { getAll, getBoard, create, update, deleteBoard };

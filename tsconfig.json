@@ -1,7 +1,7 @@
 {
   "extends": "@tsconfig/node14/tsconfig.json",
   "include": [
-    "src/**/*"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules",
@@ -10,7 +10,14 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
     "outDir": "dist",
-    "noImplicitAny": true
+    "paths": {
+      "*": [
+        "node_modules/*"
+      ]
+    },
+    "noImplicitAny": false
   }
 }

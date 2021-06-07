@@ -1,7 +1,7 @@
 interface IBoardColumn {
-  id?: string;
+  id: string;
   title: string;
-  order?: number;
+  order: number;
 }
 
 export default IBoardColumn;

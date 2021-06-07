@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const fs = require('fs');
+import * as fs from 'fs';
 /**
  * Creates a function which writes data into file with given file name
  * @param {string} filename - The file name
@@ -17,4 +15,4 @@ async (data) => {
     const jsonData = JSON.stringify(data);
     await fs.writeFileSync(filename, jsonData, 'utf-8');
 });
-module.exports = createSaveDataToFile;
+export default createSaveDataToFile;

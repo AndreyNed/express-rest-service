@@ -1,10 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const router = require('express').Router();
-const User = require('./user.model');
+import express from 'express';
+import User from './user.model';
 const usersService = require('./user.service');
 const userMiddleware = require('./user.middleware');
 const defaultHttpErrorHandler = require('../../utils/default.http.error.handler');
+const router = express.Router();
 /** Returns all users without passwords */
 router.route('/')
     .get(async (req, res) => {
@@ -56,4 +55,4 @@ router.route('/:userId')
         defaultHttpErrorHandler(e, res);
     }
 });
-module.exports = router;
+export default router;

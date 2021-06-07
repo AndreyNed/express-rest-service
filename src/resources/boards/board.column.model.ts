@@ -1,6 +1,6 @@
-import IBoardColumn from '../../types/board-column';
+import { v4 as uuidV4 } from 'uuid';
 
-const { v4: uuidV4 } = require('uuid');
+import IBoardColumn from '../../types/board-column';
 
 /**
  * Represents Column class - for boards column data
@@ -8,12 +8,12 @@ const { v4: uuidV4 } = require('uuid');
  * @class
  */
 class Column implements IBoardColumn {
-  id?: string;
+  id: string;
 
   title: string;
 
-  order?: number;
-  
+  order: number;
+
   /**
    * Creates Column instance
    * @constructor
@@ -21,11 +21,7 @@ class Column implements IBoardColumn {
    * @param {string} title - The column title
    * @param {number} [order] - The column order
    */
-  constructor({
-    id = uuidV4(),
-    title = 'Column',
-    order = 0,
-  } = {}) {
+  constructor({ id = uuidV4(), title = 'Column', order = 0 } = {}) {
     /** @member {string} */
     this.id = id;
 
@@ -37,6 +33,4 @@ class Column implements IBoardColumn {
   }
 }
 
-module.exports = Column;
-
-export {};
+export default Column;

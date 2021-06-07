@@ -1,10 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const path = require('path');
-const { DATA_PATH } = require('../../common/config');
-const createGetDataFromFile = require('../../utils/create.get.data.from.file');
-const createSaveDataToFile = require('../../utils/create.save.data.to.file');
-const { RepositoryError, NotFoundError } = require('../../types/errors');
+import * as path from 'path';
+import config from '../../common/config';
+import createGetDataFromFile from '../../utils/create.get.data.from.file';
+import createSaveDataToFile from '../../utils/create.save.data.to.file';
+import { RepositoryError, NotFoundError } from '../../types/errors';
+const { DATA_PATH } = config;
 /**
  * Represents class UserMemoryRepositoryError
  */
@@ -136,4 +135,4 @@ const deleteUser = async (userId) => {
         return throwUserRepositoryError(e, 'user was not deleted');
     }
 };
-module.exports = { getAll, create, update, getUser, deleteUser };
+export default { getAll, create, update, getUser, deleteUser };

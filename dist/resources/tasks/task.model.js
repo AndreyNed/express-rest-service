@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const { v4: uuidV4 } = require('uuid');
 /**
  * Represents task
@@ -36,3 +34,4 @@ class Task {
     }
 }
 module.exports = Task;
+export {};
