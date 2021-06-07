@@ -5,11 +5,21 @@
     "type": "git",
     "url": ""
   },
-  "type": "commonjs",
   "description": "REST service starter for RS School",
-  "main": "src/server.js",
+  "main": "dist/server.js",
+  "type": "commonjs",
+  "types": "dist",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "start": "nodemon src/server.js",
+    "ts-dev": "nodemon",
+    "ts-start": "ts-node src/server.ts",
+    "ts-build": "tsc",
+    "build-and-start": "tsc & node dist/server.js",
+    "start": "nodemon --config nodemon-js.json dist/server.js",
+    "dev": "nodemon --config nodemon.json dist/server.js",
+    "dev:debug": "nodemon --config nodemon-js.json --inspect-brk dist/server.js",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
@@ -44,6 +54,7 @@
     ]
   },
   "dependencies": {
+    "@types/uuid": "^8.3.0",
     "cross-env": "7.0.3",
     "dotenv": "9.0.0",
     "express": "4.17.1",
@@ -52,13 +63,20 @@
     "yamljs": "0.3.0"
   },
   "devDependencies": {
+    "@tsconfig/node14": "^1.0.0",
+    "@types/express": "^4.17.12",
+    "@types/node": "^15.6.1",
+    "@types/swagger-ui-express": "^4.1.2",
+    "@types/yamljs": "^0.2.31",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.25.0",
     "chai": "4.3.4",
     "debug": "4.3.1",
     "dirty-chai": "2.0.1",
     "eslint": "7.2.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-config-prettier": "8.3.0",
-    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-import": "2.23.4",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "3.4.0",
     "husky": "4.3.8",
@@ -66,6 +84,8 @@
     "lint-staged": "10.5.4",
     "nodemon": "2.0.7",
     "prettier": "2.2.1",
-    "supertest": "6.1.3"
+    "supertest": "6.1.3",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2"
   }
 }

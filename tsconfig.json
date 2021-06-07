@@ -1,0 +1,23 @@
+{
+  "extends": "@tsconfig/node14/tsconfig.json",
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.js"
+  ],
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "paths": {
+      "*": [
+        "node_modules/*"
+      ]
+    },
+    "noImplicitAny": false
+  }
+}

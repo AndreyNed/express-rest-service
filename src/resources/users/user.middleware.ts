@@ -1,0 +1,29 @@
+import * as express from 'express';
+
+import userService from './user.service';
+import defaultHttpErrorHandler from '../../utils/default.http.error.handler';
+
+/**
+ * Middleware - gets user by `req.params.id` and sets to `req`
+ * @exports
+ * @async
+ * @param {express.Request} req - The http request
+ * @param {express.Response} res - The http response
+ * @param {express.NextFunction} next - used to proceed to next request handler
+ */
+const getUser = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+): Promise<void> => {
+  const { userId } = req.params;
+  try {
+    res.locals.user = await userService.getUser(userId);
+
+    next();
+  } catch (e) {
+    defaultHttpErrorHandler(e, res);
+  }
+};
+
+export default getUser;
